@@ -55,9 +55,9 @@ void setup() {
 
 
   if (WiFi.status() == WL_CONNECTED) {
-    tft.println("Connecting to WiFi"); 
+    tft.println("Connected to WiFi"); 
   } else {
-    tft.println("Connecting to WiFi"); 
+    tft.println("WiFi connection failed"); 
   }
 
   trustedRoots.append(cert_ISRG_X1);
