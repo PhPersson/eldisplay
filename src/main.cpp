@@ -46,8 +46,8 @@ void setup() {
   tft.setCursor(10, 10); // Start at the top left
 
   tft.println("Connecting to WiFi"); 
-
-
+  tft.setCursor(10, 50);
+  tft.println(SSID); 
   WiFi.begin(SSID,WiFipassword);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
