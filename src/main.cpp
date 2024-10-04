@@ -47,7 +47,7 @@ void getElectricityPrices() {
     // Clear the screen before displaying data
     tft.fillScreen(ILI9341_BLACK);
     tft.setTextSize(2); // Change the text size
-    tft.setCursor(115, 10);
+    tft.setCursor(80, 30);
     tft.setTextColor(ILI9341_WHITE);
     tft.println("Elpris:");
 
@@ -89,7 +89,7 @@ void setup() {
     tft.setTextColor(ILI9341_RED);
     tft.println("WiFi connection failed"); 
   }
-  
+
   timeClient.begin();
   timeClient.update(); // Update to get current time
   trustedRoots.append(cert_ISRG_X1);
