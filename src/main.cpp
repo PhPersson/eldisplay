@@ -3,6 +3,7 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
+#include <Adafruit_ILI9341.h>
 #include <user_config.h>
 #include <certs.h>
 
