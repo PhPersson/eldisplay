@@ -1,7 +1,24 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClientSecure.h>
+#include <ArduinoJson.h> 
 #include <user_config.h>
 
+void getElectricityPrices() {
+  WiFiClientSecure client;
+  HTTPClient http;
+  client.setInsecure(); // Only during testing!!
+
+  http.begin(client,api_url);
+  int httpCode = http.GET(); // Make request to the api
+
+
+  if (httpCode > 0) {
+    String payload = http.getString();
+    Serial.println(payload);
+  }
+}
 
 
 void setup() {
@@ -20,9 +37,9 @@ void setup() {
   } else {
     Serial.println("WiFi connection failed");
   }
+  getElectricityPrices();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 }
 
