@@ -4,6 +4,8 @@
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
 #include <Adafruit_ILI9341.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 #include <user_config.h>
 #include <certs.h>
 
@@ -13,7 +15,9 @@ BearSSL::X509List trustedRoots;
 
 // Initialize the ILI9341 display 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
-
+// NTP setup
+WiFiUDP udp;
+NTPClient timeClient(udp, "pool.ntp.org", 7200); // UTC+1
 
 void getElectricityPrices() {
   WiFiClientSecure client;
@@ -43,10 +47,9 @@ void getElectricityPrices() {
     // Clear the screen before displaying data
     tft.fillScreen(ILI9341_BLACK);
     tft.setTextSize(2); // Change the text size
-    tft.setCursor(50, 10);
+    tft.setCursor(115, 10);
     tft.setTextColor(ILI9341_WHITE);
     tft.println("Elpris:");
-
 
   }
   http.end();
@@ -86,7 +89,9 @@ void setup() {
     tft.setTextColor(ILI9341_RED);
     tft.println("WiFi connection failed"); 
   }
-
+  
+  timeClient.begin();
+  timeClient.update(); // Update to get current time
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
 
