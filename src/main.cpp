@@ -26,6 +26,7 @@ void getElectricityPrices() {
 
   if (httpCode > 0) {
     String payload = http.getString();
+    Serial.println(payload);
     JsonDocument json;
     DeserializationError error = deserializeJson(json, payload);
 
@@ -39,6 +40,13 @@ void getElectricityPrices() {
       return;
     }
 
+    // Clear the screen before displaying data
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setTextSize(2); // Change the text size
+    tft.setCursor(50, 10);
+    tft.setTextColor(ILI9341_WHITE);
+    tft.println("Elpris:");
+
 
   }
   http.end();
@@ -51,7 +59,6 @@ void setup() {
 
   tft.begin();
   tft.setRotation(0); // Horizontal mode on the screen
-
   tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
   tft.setTextColor(ILI9341_WHITE); // Sets text color to white
   tft.setTextSize(2); // Text size
@@ -60,6 +67,7 @@ void setup() {
 
   tft.println("Connecting to WiFi"); 
   tft.setCursor(10, 50);
+  tft.setTextColor(ILI9341_YELLOW);
   tft.println(SSID); 
   WiFi.begin(SSID,WiFipassword);
   while (WiFi.status() != WL_CONNECTED) {
@@ -68,8 +76,14 @@ void setup() {
 
 
   if (WiFi.status() == WL_CONNECTED) {
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setCursor(10, 10);
+    tft.setTextColor(ILI9341_GREEN);
     tft.println("Connected to WiFi"); 
   } else {
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setCursor(10, 10); // Start at the top left
+    tft.setTextColor(ILI9341_RED);
     tft.println("WiFi connection failed"); 
   }
 
