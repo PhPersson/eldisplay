@@ -1,18 +1,28 @@
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <user_config.h>
 
-// put function declarations here:
-int myFunction(int, int);
+
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  // Initialize serial communication
+  Serial.begin(115200);
+
+
+  WiFi.begin(SSID,WiFipassword);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("Connected to WiFi");
+  } else {
+    Serial.println("WiFi connection failed");
+  }
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
