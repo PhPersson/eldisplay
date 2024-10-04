@@ -4,11 +4,16 @@
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
 #include <user_config.h>
+#include <certs.h>
+
+
+// Adds trsuted root-certs
+BearSSL::X509List trustedRoots;
 
 void getElectricityPrices() {
   WiFiClientSecure client;
   HTTPClient http;
-  client.setInsecure(); // Only during testing!!
+  client.setTrustAnchors(&trustedRoots);
 
   http.begin(client,api_url);
   int httpCode = http.GET(); // Make request to the api
@@ -18,6 +23,7 @@ void getElectricityPrices() {
     String payload = http.getString();
     Serial.println(payload);
   }
+  http.end();
 }
 
 
@@ -37,6 +43,10 @@ void setup() {
   } else {
     Serial.println("WiFi connection failed");
   }
+
+  trustedRoots.append(cert_ISRG_X1);
+  trustedRoots.append(cert_ISRG_X2);
+
   getElectricityPrices();
 }
 
