@@ -11,6 +11,10 @@
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
 
+// Initialize the ILI9341 display 
+Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+
+
 void getElectricityPrices() {
   WiFiClientSecure client;
   HTTPClient http;
@@ -31,6 +35,17 @@ void getElectricityPrices() {
 void setup() {
   // Initialize serial communication
   Serial.begin(115200);
+
+  tft.begin();
+  tft.setRotation(0); // Horizontal mode on the screen
+
+  tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
+  tft.setTextColor(ILI9341_WHITE); // Sets text color to white
+  tft.setTextSize(2); // Text size
+
+  tft.setCursor(10, 10); // Start at the top left
+
+  tft.println("Connecting to WiFi"); 
 
 
   WiFi.begin(SSID,WiFipassword);
