@@ -19,11 +19,22 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 WiFiUDP udp;
 NTPClient timeClient(udp, "pool.ntp.org", 7200); // UTC+1
 
+
+String getCurrentDate(){
+  time_t rawTime = timeClient.getEpochTime();
+  struct tm *ptm = gmtime ((time_t *)&rawTime); 
+  int monthDay = ptm->tm_mday;
+  int currentMonth = ptm->tm_mon+1;
+  int currentYear = ptm->tm_year+1900;
+
+  return String(currentYear) + "/" + String(currentMonth) + "-" + String(monthDay);
+}
+
+
 void getElectricityPrices() {
   WiFiClientSecure client;
   HTTPClient http;
   client.setTrustAnchors(&trustedRoots);
-
   http.begin(client,api_url);
   int httpCode = http.GET(); // Make request to the api
 
@@ -94,8 +105,8 @@ void setup() {
   timeClient.update(); // Update to get current time
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
-
-  getElectricityPrices();
+  getCurrentDate();
+  // getElectricityPrices();
 }
 
 void loop() {
