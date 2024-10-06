@@ -26,7 +26,6 @@ String getCurrentDate(){
 
   char dateStr[12];
   strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
-
   return String(dateStr);
 }
 
@@ -49,10 +48,11 @@ void getElectricityPrices() {
       Serial.print("Failed to parse JSON: ");
       Serial.println(error.c_str());
       tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
-      tft.setCursor(10, 10); // Start at the top left
+      tft.setCursor(10, 10);
       tft.setTextColor(ILI9341_RED);
       tft.println("Error from API");
-
+      tft.setCursor(10, 40);
+      tft.println(error.c_str());
       return;
     }
 
@@ -63,6 +63,16 @@ void getElectricityPrices() {
     tft.setTextColor(ILI9341_WHITE);
     tft.println("Elpris:");
 
+
+    
+
+  }
+  else {
+  Serial.print("Error on HTTP request: ");
+  Serial.println(httpCode);
+  tft.setCursor(10, 60);
+  tft.setTextColor(ILI9341_RED);
+  tft.println("Error when requesting API");
   }
   http.end();
 }
