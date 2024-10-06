@@ -27,9 +27,7 @@ String getCurrentDate(){
   char dateStr[12];
   strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
 
-  String formattedDate = String(dateStr);
-
-  return formattedDate;
+  return String(dateStr);
 }
 
 
@@ -44,7 +42,6 @@ void getElectricityPrices() {
 
   if (httpCode > 0) {
     String payload = http.getString();
-    Serial.println(payload);
     JsonDocument json;
     DeserializationError error = deserializeJson(json, payload);
 
@@ -54,7 +51,8 @@ void getElectricityPrices() {
       tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
       tft.setCursor(10, 10); // Start at the top left
       tft.setTextColor(ILI9341_RED);
-      tft.println("Could not parse response from API");
+      tft.println("Error from API");
+
       return;
     }
 
