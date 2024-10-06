@@ -63,10 +63,34 @@ void getElectricityPrices() {
     tft.setTextColor(ILI9341_WHITE);
     tft.println("Elpris:");
 
-
+    int currentHour = timeClient.getHours();
+    int hoursDisplayed = 0;
     
+    for (size_t i = 0; i < json.size(); i++) {
+      String timeStart(json[i]["time_start"]);
+      int startOfHour = timeStart.substring(11,13).toInt(); //Split the time string and extract only the hour
+    
+      // Check if the current hour or next two hours are matched
+      if (startOfHour == currentHour || startOfHour == (currentHour + 1) % 24 || startOfHour == (currentHour + 2) % 24) {
+      float sekPerKwh = json[i]["SEK_per_kWh"];
+      float totalSekPerKwh = 0;
+      totalSekPerKwh = sekPerKwh;
+      totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0; // Round to 2 decimal places
 
+      // Display the extracted data
+      tft.setCursor(30, 80 + (hoursDisplayed * 40));
+      tft.printf("%02d: SEK: %.2f", startOfHour, totalSekPerKwh);
+      hoursDisplayed++;
+
+      if (hoursDisplayed >= 3) {
+        break;
+      }
+
+      }
+    }
   }
+
+
   else {
   Serial.print("Error on HTTP request: ");
   Serial.println(httpCode);
