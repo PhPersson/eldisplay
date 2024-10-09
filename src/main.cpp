@@ -85,7 +85,7 @@ void getElectricityPrices() {
 
 
       // Display the extracted data
-      tft.setCursor(30, 80 + (hoursDisplayed * 40));
+      tft.setCursor(30, 60 + (hoursDisplayed * 40));
       tft.printf("%02d: SEK: %.2f", startOfHour, totalSekPerKwh);
       hoursDisplayed++;
 
@@ -120,9 +120,8 @@ void setup() {
 
   tft.setCursor(10, 10); // Start at the top left
 
-  tft.println("Starting AP");
   WiFiManager wifiManager;
-  wifiManager.autoConnect("Eldisplay");
+  wifiManager.autoConnect("Eldisplay","lampanlyser");
   
 
   if (WiFi.status() == WL_CONNECTED) {
@@ -130,13 +129,17 @@ void setup() {
     tft.setCursor(10, 10);
     tft.setTextColor(ILI9341_GREEN);
     tft.println("Connected to WiFi");
-    tft.println("");
+    tft.setTextColor(ILI9341_YELLOW);
+    tft.setCursor(10, 50);
     tft.println(wifiManager.getWiFiSSID());
   } else {
     tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(10, 10); // Start at the top left
+    tft.setCursor(20, 10);
     tft.setTextColor(ILI9341_RED);
-    tft.println("WiFi connection failed"); 
+    tft.println("WiFi connection failed");
+    tft.println("Connect to AP:");
+    tft.setTextColor(ILI9341_YELLOW);
+    tft.println("Eldisplay");
   }
 
   timeClient.begin();
