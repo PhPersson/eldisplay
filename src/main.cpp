@@ -6,9 +6,9 @@
 #include <Adafruit_ILI9341.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
+#include <WiFiManager.h>
 #include <user_config.h>
 #include <certs.h>
-
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
@@ -18,7 +18,6 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 // NTP setup
 WiFiUDP udp;
 NTPClient timeClient(udp, "pool.ntp.org", 7200); // UTC+1
-
 
 String getCurrentDate(){
   time_t rawTime = timeClient.getEpochTime();
@@ -114,21 +113,18 @@ void setup() {
 
   tft.setCursor(10, 10); // Start at the top left
 
-  tft.println("Connecting to WiFi"); 
-  tft.setCursor(10, 50);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.println(SSID); 
-  WiFi.begin(SSID,WiFipassword);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-  }
-
+  tft.println("Starting AP");
+  WiFiManager wifiManager;
+  wifiManager.autoConnect("Eldisplay");
+  
 
   if (WiFi.status() == WL_CONNECTED) {
     tft.fillScreen(ILI9341_BLACK);
     tft.setCursor(10, 10);
     tft.setTextColor(ILI9341_GREEN);
-    tft.println("Connected to WiFi"); 
+    tft.println("Connected to WiFi");
+    tft.println("");
+    tft.println(wifiManager.getWiFiSSID());
   } else {
     tft.fillScreen(ILI9341_BLACK);
     tft.setCursor(10, 10); // Start at the top left
@@ -141,9 +137,9 @@ void setup() {
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
 
+
   getElectricityPrices();
 }
 
 void loop() {
 }
-
