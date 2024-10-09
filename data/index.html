@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #444;
+    }
+    input[type="text"], input[type="number"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #5cb85c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #4cae4c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Settings</h1>
+    <form id="settingsForm">
+      <label for="priceThreshold">Price Threshold (SEK/kWh)</label>
+      <input type="number" id="priceThreshold" name="priceThreshold" step="0.01" required>
+      
+      <label for="electricityPriceArea">Electricity Price Area</label>
+      <input type="text" id="electricityPriceArea" name="electricityPriceArea" required>
+
+      <button type="submit">Save Settings</button>
+    </form>
+    <div id="statusMessage"></div>
+  </div>
+
+  <script>
+    document.getElementById('settingsForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const priceThreshold = document.getElementById('priceThreshold').value;
+      const electricityPriceArea = document.getElementById('electricityPriceArea').value;
+
+      fetch('/saveSettings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          priceThreshold: priceThreshold,
+          electricityPriceArea: electricityPriceArea
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('statusMessage').innerText = data.message;
+      });
+    });
+  </script>
+</body>
+</html>

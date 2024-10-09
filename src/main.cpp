@@ -64,7 +64,7 @@ void getElectricityPrices() {
 
     int currentHour = timeClient.getHours();
     int hoursDisplayed = 0;
-    
+    Serial.println(timeClient.getHours());
     for (size_t i = 0; i < json.size(); i++) {
       String timeStart(json[i]["time_start"]);
       int startOfHour = timeStart.substring(11,13).toInt(); //Split the time string and extract only the hour
@@ -76,15 +76,22 @@ void getElectricityPrices() {
       totalSekPerKwh = sekPerKwh;
       totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0; // Round to 2 decimal places
 
+      // Set text color based on price threshold
+      if (totalSekPerKwh > priceThreshold) {
+        tft.setTextColor(ILI9341_RED); 
+      } else {
+        tft.setTextColor(ILI9341_GREEN);
+      }
+
+
       // Display the extracted data
       tft.setCursor(30, 80 + (hoursDisplayed * 40));
       tft.printf("%02d: SEK: %.2f", startOfHour, totalSekPerKwh);
       hoursDisplayed++;
 
-      if (hoursDisplayed >= 3) {
-        break;
-      }
-
+        if (hoursDisplayed >= 3) {
+          break;
+        }
       }
     }
   }
