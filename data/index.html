@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; }
+    form { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 400px; margin: auto; }
+    h1 { text-align: center; color: #333; }
+    label { display: block; margin-bottom: 10px; font-weight: bold; color: #555; }
+    input[type='text'], input[type='number'], input[type='submit'] { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
+    input[type='checkbox'] { margin-right: 10px; }
+    input[type='submit'] { background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
+    input[type='submit']:hover { background-color: #218838; }
+    #eloverforing, #elpris { display: none; }
+  </style>
+  <script>
+    function toggleElOverforingsavgift() {
+      var taxCheckbox = document.getElementById('tax');
+      var eloverforingDiv = document.getElementById('eloverforing');
+      if (taxCheckbox.checked) {
+        eloverforingDiv.style.display = 'block';
+      } else {
+        eloverforingDiv.style.display = 'none';
+      }
+    }
+
+    function toggleElPris() {
+      var eloverforingCheckbox = document.getElementById('eloverforingCheckbox');
+      var elprisDiv = document.getElementById('elpris');
+      if (eloverforingCheckbox.checked) {
+        elprisDiv.style.display = 'block';
+      } else {
+        elprisDiv.style.display = 'none';
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Settings</h1>
+  <form action="/update" method="POST">
+    <label for="area">Elprisområde:</label>
+    <input type="text" id="area" name="area" value="{{area}}"><br>
+
+    <label for="threshold">Högt elpris:</label>
+    <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange högt elpris"><br>
+
+    <label for="tax"><input type="checkbox" id="tax" name="tax" {{tax}} onclick="toggleElOverforingsavgift()"> Räkna in moms? (25%)</label><br>
+
+    <label for="eloverforingCheckbox"><input type="checkbox" id="eloverforingCheckbox" name="eloverforingCheckbox" onclick="toggleElPris()"> Räkna in elöverföringsavgift?</label><br>
+
+    <div id="elpris">
+      <label for="transferFee">Elöverföringsavgift:</label>
+      <input type="number" id="transferFee" name="transferFee" step="0.01" placeholder="Ange elöverföringsavgiften"><br>
+    </div>
+
+    <input type="submit" value="Update">
+  </form>
+</body>
+</html>

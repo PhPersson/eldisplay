@@ -1,14 +1,20 @@
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
 #include <Adafruit_ILI9341.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-#include <WiFiManager.h>
+#include <ESPAsyncWiFiManager.h>
+
+
 #include <user_config.h>
 #include <certs.h>
+
+#include <ESPAsyncWebServer.h>
+
+
+DNSServer dns;
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
@@ -29,14 +35,18 @@ String getCurrentDate(){
 }
 
 
+// Webbservern på port 80
+AsyncWebServer server(80);
+
 void getElectricityPrices() {
   WiFiClientSecure client;
   HTTPClient http;
   client.setTrustAnchors(&trustedRoots);
   String url = api_url + getCurrentDate() + "_" + electricityPriceArea +".json"; // Dynamiclly use todays date using concatenation
+  Serial.println(url);
   http.begin(client,url);
   int httpCode = http.GET(); // Make request to the api
-
+  delay(1000);
 
   if (httpCode > 0) {
     String payload = http.getString();
@@ -69,12 +79,21 @@ void getElectricityPrices() {
       String timeStart(json[i]["time_start"]);
       int startOfHour = timeStart.substring(11,13).toInt(); //Split the time string and extract only the hour
     
+
       // Check if the current hour or next two hours are matched
       if (startOfHour == currentHour || startOfHour == (currentHour + 1) % 24 || startOfHour == (currentHour + 2) % 24) {
       float sekPerKwh = json[i]["SEK_per_kWh"];
       float totalSekPerKwh = 0;
-      totalSekPerKwh = sekPerKwh;
+
+
+      if (shouldAddTax) {
+          totalSekPerKwh = sekPerKwh * 1.25; // 25% tax
+      } else {
+          totalSekPerKwh = sekPerKwh;
+      }
+
       totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0; // Round to 2 decimal places
+
 
       // Set text color based on price threshold
       if (totalSekPerKwh > priceThreshold) {
@@ -85,7 +104,7 @@ void getElectricityPrices() {
 
 
       // Display the extracted data
-      tft.setCursor(30, 60 + (hoursDisplayed * 40));
+      tft.setCursor(40, 80 + (hoursDisplayed * 40));
       tft.printf("%02d: SEK: %.2f", startOfHour, totalSekPerKwh);
       hoursDisplayed++;
 
@@ -98,6 +117,7 @@ void getElectricityPrices() {
 
 
   else {
+  tft.fillScreen(ILI9341_BLACK);
   Serial.print("Error on HTTP request: ");
   Serial.println(httpCode);
   tft.setCursor(10, 60);
@@ -119,8 +139,8 @@ void setup() {
   tft.setTextSize(2); // Text size
 
   tft.setCursor(10, 10); // Start at the top left
-
-  WiFiManager wifiManager;
+  AsyncWiFiManager wifiManager(&server,&dns);
+  // WiFiManager wifiManager;
   wifiManager.autoConnect("Eldisplay","lampanlyser");
   
 
@@ -131,7 +151,7 @@ void setup() {
     tft.println("Connected to WiFi");
     tft.setTextColor(ILI9341_YELLOW);
     tft.setCursor(10, 50);
-    tft.println(wifiManager.getWiFiSSID());
+    // tft.println(wifiManager.getWiFiSSID());
   } else {
     tft.fillScreen(ILI9341_BLACK);
     tft.setCursor(20, 10);
@@ -146,7 +166,6 @@ void setup() {
   timeClient.update(); // Update to get current time
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
-
 
   getElectricityPrices();
 }
