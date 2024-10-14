@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="sv"> 
 <head>
+  <meta charset="UTF-8"> 
+  <title>Eldisplay</title> 
   <style>
     body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; }
     form { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 400px; margin: auto; }
@@ -13,16 +15,6 @@
     #eloverforing, #elpris { display: none; }
   </style>
   <script>
-    function toggleElOverforingsavgift() {
-      var taxCheckbox = document.getElementById('tax');
-      var eloverforingDiv = document.getElementById('eloverforing');
-      if (taxCheckbox.checked) {
-        eloverforingDiv.style.display = 'block';
-      } else {
-        eloverforingDiv.style.display = 'none';
-      }
-    }
-
     function toggleElPris() {
       var eloverforingCheckbox = document.getElementById('eloverforingCheckbox');
       var elprisDiv = document.getElementById('elpris');
@@ -38,18 +30,24 @@
   <h1>Settings</h1>
   <form action="/update" method="POST">
     <label for="area">Elprisområde:</label>
-    <input type="text" id="area" name="area" value="{{area}}"><br>
+    <input type="text" id="area" name="area" value="{{area}}" placeholder="Ange elprisområde"><br>
 
     <label for="threshold">Högt elpris:</label>
     <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange högt elpris"><br>
 
-    <label for="tax"><input type="checkbox" id="tax" name="tax" {{tax}} onclick="toggleElOverforingsavgift()"> Räkna in moms? (25%)</label><br>
+    <label for="tax">
+      <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in moms? (25%)
+    </label><br>
 
-    <label for="eloverforingCheckbox"><input type="checkbox" id="eloverforingCheckbox" name="eloverforingCheckbox" onclick="toggleElPris()"> Räkna in elöverföringsavgift?</label><br>
-
-    <div id="elpris">
-      <label for="transferFee">Elöverföringsavgift:</label>
-      <input type="number" id="transferFee" name="transferFee" step="0.01" placeholder="Ange elöverföringsavgiften"><br>
+    <div id="eloverforing"> <!-- Added this div for eloverforing -->
+      <label for="eloverforingCheckbox">
+        <input type="checkbox" id="eloverforingCheckbox" name="eloverforingCheckbox" onclick="toggleElPris()"> Räkna in elöverföringsavgift?
+      </label><br>
+      
+      <div id="elpris">
+        <label for="transferFee">Elöverföringsavgift:</label>
+        <input type="number" id="transferFee" name="transferFee" step="0.01" placeholder="Ange elöverföringsavgiften"><br>
+      </div>
     </div>
 
     <input type="submit" value="Update">

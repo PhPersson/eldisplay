@@ -10,9 +10,7 @@
 
 #include <user_config.h>
 #include <certs.h>
-
-#include <ESPAsyncWebServer.h>
-
+#include "webserverhandler.h"
 
 DNSServer dns;
 
@@ -125,6 +123,15 @@ void getElectricityPrices() {
   tft.println("Error when requesting API");
   }
   http.end();
+
+
+  IPAddress ip = WiFi.localIP();
+
+  // Display IP address at the bottom center
+  tft.setCursor(10, tft.height() - 30);  // Adjust the x position as needed for centering
+  tft.print("IP: ");
+  tft.print(ip);
+
 }
 
 
@@ -137,12 +144,10 @@ void setup() {
   tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
   tft.setTextColor(ILI9341_WHITE); // Sets text color to white
   tft.setTextSize(2); // Text size
-
   tft.setCursor(10, 10); // Start at the top left
   AsyncWiFiManager wifiManager(&server,&dns);
-  // WiFiManager wifiManager;
   wifiManager.autoConnect("Eldisplay","lampanlyser");
-  
+  WiFi.hostname("eldisplay");
 
   if (WiFi.status() == WL_CONNECTED) {
     tft.fillScreen(ILI9341_BLACK);
@@ -151,7 +156,6 @@ void setup() {
     tft.println("Connected to WiFi");
     tft.setTextColor(ILI9341_YELLOW);
     tft.setCursor(10, 50);
-    // tft.println(wifiManager.getWiFiSSID());
   } else {
     tft.fillScreen(ILI9341_BLACK);
     tft.setCursor(20, 10);
@@ -161,6 +165,16 @@ void setup() {
     tft.setTextColor(ILI9341_YELLOW);
     tft.println("Eldisplay");
   }
+  IPAddress ip = WiFi.localIP();
+
+  // Display IP address at the bottom center
+  tft.setTextSize(1);
+  tft.setTextColor(ILI9341_WHITE);
+  tft.setCursor(10, tft.height() - 30);  // Adjust the x position as needed for centering
+  tft.print("eldisplay.local");
+  tft.print(ip);
+
+  
 
   timeClient.begin();
   timeClient.update(); // Update to get current time
@@ -168,6 +182,9 @@ void setup() {
   trustedRoots.append(cert_ISRG_X2);
 
   getElectricityPrices();
+
+  setupWebServer(server);
+
 }
 
 void loop() {

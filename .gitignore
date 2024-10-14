@@ -6,3 +6,5 @@
 
 
 user_config.h
+user_config.cpp
+user_config-template.h
