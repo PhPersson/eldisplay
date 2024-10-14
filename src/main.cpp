@@ -10,6 +10,7 @@
 
 #include <user_config.h>
 #include <certs.h>
+#include <ESP8266mDNS.h>
 #include "webserverhandler.h"
 
 DNSServer dns;
@@ -149,6 +150,12 @@ void setup() {
   wifiManager.autoConnect("Eldisplay","lampanlyser");
   WiFi.hostname("eldisplay");
 
+  // Start mDNS at esp8266.local address
+   if (!MDNS.begin("eldisplay")) 
+   {             
+     Serial.println("Error starting mDNS");
+   }
+
     // Begin LittleFS
   if (!LittleFS.begin())
   {
@@ -195,4 +202,6 @@ void setup() {
 }
 
 void loop() {
+  MDNS.update();
+
 }
