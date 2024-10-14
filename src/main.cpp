@@ -5,13 +5,13 @@
 #include <Adafruit_ILI9341.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-#include <ESPAsyncWiFiManager.h>
 
 
 #include <user_config.h>
 #include <certs.h>
-#include <ESP8266mDNS.h>
+
 #include "webserverhandler.h"
+#include <wifihandler.h>
 
 DNSServer dns;
 
@@ -146,49 +146,47 @@ void setup() {
   tft.setTextColor(ILI9341_WHITE); // Sets text color to white
   tft.setTextSize(2); // Text size
   tft.setCursor(10, 10); // Start at the top left
-  AsyncWiFiManager wifiManager(&server,&dns);
-  wifiManager.autoConnect("Eldisplay","lampanlyser");
-  WiFi.hostname("eldisplay");
 
-  // Start mDNS at esp8266.local address
-   if (!MDNS.begin("eldisplay")) 
-   {             
-     Serial.println("Error starting mDNS");
-   }
 
-    // Begin LittleFS
-  if (!LittleFS.begin())
-  {
-    Serial.println("An Error has occurred while mounting LittleFS");
-    return;
-  }
+  setupWiFi();
 
-  if (WiFi.status() == WL_CONNECTED) {
-    tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(10, 10);
-    tft.setTextColor(ILI9341_GREEN);
-    tft.println("Connected to WiFi");
-    tft.setTextColor(ILI9341_YELLOW);
-    tft.setCursor(10, 50);
-  } else {
-    tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(20, 10);
-    tft.setTextColor(ILI9341_RED);
-    tft.println("WiFi connection failed");
-    tft.println("Connect to AP:");
-    tft.setTextColor(ILI9341_YELLOW);
-    tft.println("Eldisplay");
-  }
-  IPAddress ip = WiFi.localIP();
+  // AsyncWiFiManager wifiManager(&server,&dns);
+  // wifiManager.setAPCallback(configModeCallback);
+  // wifiManager.autoConnect("Eldisplay","lampanlyser");
 
-  // Display IP address at the bottom center
-  tft.setTextSize(1);
-  tft.setTextColor(ILI9341_WHITE);
-  tft.setCursor(10, tft.height() - 30);  // Adjust the x position as needed for centering
-  tft.print("eldisplay.local");
-  tft.print(ip);
 
-  
+  // WiFi.hostname("eldisplay");
+
+  // // Start mDNS at esp8266.local address
+  //  if (!MDNS.begin("eldisplay")) 
+  //  {             
+  //    Serial.println("Error starting mDNS");
+  //  }
+
+  //   // Begin LittleFS
+  // if (!LittleFS.begin())
+  // {
+  //   Serial.println("An Error has occurred while mounting LittleFS");
+  //   return;
+  // }
+
+  // if (WiFi.status() == WL_CONNECTED) {
+  //   tft.fillScreen(ILI9341_BLACK);
+  //   tft.setCursor(10, 10);
+  //   tft.setTextColor(ILI9341_GREEN);
+  //   tft.println("Connected to WiFi");
+  //   tft.setTextColor(ILI9341_YELLOW);
+  //   tft.setCursor(10, 50);
+  // } else {
+  //   tft.fillScreen(ILI9341_BLACK);
+  //   tft.setCursor(20, 10);
+  //   tft.setTextColor(ILI9341_RED);
+  //   tft.println("WiFi connection failed");
+  //   tft.println("Connect to AP:");
+  //   tft.setTextColor(ILI9341_YELLOW);
+  //   tft.println("Eldisplay");
+  // }
+
 
   timeClient.begin();
   timeClient.update(); // Update to get current time
