@@ -149,6 +149,13 @@ void setup() {
   wifiManager.autoConnect("Eldisplay","lampanlyser");
   WiFi.hostname("eldisplay");
 
+    // Begin LittleFS
+  if (!LittleFS.begin())
+  {
+    Serial.println("An Error has occurred while mounting LittleFS");
+    return;
+  }
+
   if (WiFi.status() == WL_CONNECTED) {
     tft.fillScreen(ILI9341_BLACK);
     tft.setCursor(10, 10);
