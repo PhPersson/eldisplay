@@ -2,23 +2,20 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
-#include <Adafruit_ILI9341.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-
 
 #include <user_config.h>
 #include <certs.h>
 
 #include "FileHandler.h"
 #include "NetworkHandler.h"
+#include "DisplayHandler.h"
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
 
 extern AsyncWebServer server;
-// Initialize the ILI9341 display 
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 // NTP setup
 WiFiUDP udp;
 NTPClient timeClient(udp, "pool.ntp.org", 7200); // UTC+1
@@ -31,37 +28,6 @@ String getCurrentDate(){
   strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
   return String(dateStr);
 }
-
-void displayConnectedMessage(){
-
-    tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(10, 10);
-    tft.setTextColor(ILI9341_GREEN);
-    tft.println("Connected to WiFi");
-    tft.setTextColor(ILI9341_YELLOW);
-    tft.setCursor(10, 50);  
-}
-
-void displayConnectionFailedMessage(){
-    tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(20, 10);
-    tft.setTextColor(ILI9341_RED);
-    tft.println("Connect to AP:");
-    tft.setCursor(20, 50);
-    tft.setTextColor(ILI9341_YELLOW);
-    tft.println("Eldisplay");
-}
-
-
-void handleWiFiStatus(AsyncWiFiManager *myWiFiManage) {
-    if (WiFi.status() == WL_CONNECTED) {
-        displayConnectedMessage();
-    } else {
-        displayConnectionFailedMessage();
-    }
-}
-
-
 
 void getElectricityPrices() {
   WiFiClientSecure client;
@@ -142,23 +108,10 @@ void getElectricityPrices() {
 
 
   else {
-  tft.fillScreen(ILI9341_BLACK);
-  Serial.print("Error on HTTP request: ");
-  Serial.println(httpCode);
-  tft.setCursor(10, 60);
-  tft.setTextColor(ILI9341_RED);
-  tft.println("Error when requesting API");
+  displayHttpErrorMessage(httpCode);
   }
   http.end();
-
-
-
-
-  tft.setTextColor(ILI9341_WHITE); // Sets text color to white
-  tft.setTextSize(1); // Text size
-  tft.setCursor(80, tft.height() - 30);  // Adjust the x position as needed for centering
-  tft.print("eldisplay.local");
-
+  displayMDNS();
 
 }
 
@@ -167,14 +120,7 @@ void setup() {
   // Initialize serial communication
   Serial.begin(115200);
 
-  tft.begin();
-  tft.setRotation(0); // Horizontal mode on the screen
-  tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
-  tft.setTextColor(ILI9341_WHITE); // Sets text color to white
-  tft.setTextSize(2); // Text size
-  tft.setCursor(10, 10); // Start at the top left
-
-
+  
   initNetwork();
   setupMDNS();
   setHostname();
@@ -185,25 +131,19 @@ void setup() {
     return;
   }
 
-
   timeClient.begin();
   timeClient.update(); 
 
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
 
+  initDisplay();
+
   if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
-      getElectricityPrices();
+    getElectricityPrices();
   } else {
-  tft.fillScreen(ILI9341_BLACK);
-  tft.setCursor(10, 60);
-  tft.setTextColor(ILI9341_RED);
-  tft.print("No values defined");
-  tft.print("open eldisplay.local");
-  tft.print("to define values");
-
+    displayNoValuesMessage();
   }
-
 
 }
 
