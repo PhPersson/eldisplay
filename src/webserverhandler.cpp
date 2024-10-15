@@ -6,8 +6,6 @@
 const char* PARAM_AREA = "area";
 const char* PARAM_THRESHOLD = "threshold";
 const char* PARAM_TAX = "tax";
-const char* PARAM_ELOVERFORING = "eloverforingCheckbox";
-const char* PARAM_TRANSFERFEE = "transferFee";
 
 void setupWebServer(AsyncWebServer &server) {
 
