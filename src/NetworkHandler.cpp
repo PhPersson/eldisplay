@@ -45,7 +45,7 @@ void setupWebServer(AsyncWebServer &server) {
     request->send(404,"text/plain", "Not found");
     });
 
-    server.on("/update", HTTP_POST, [] (AsyncWebServerRequest *request) {
+    server.on("/config", HTTP_POST, [] (AsyncWebServerRequest *request) {
 
         if (request->hasParam(PARAM_AREA, true)) {
             
