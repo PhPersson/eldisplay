@@ -19,4 +19,4 @@ bool checkValues(char* electricityPriceArea, size_t areaLen, float& priceThresho
 // Initialize LittleFS
 bool initializeFileSystem();
 
-#endif // FILE_HANDLER_H
+#endif
