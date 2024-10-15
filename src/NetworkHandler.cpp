@@ -27,15 +27,18 @@ void setupMDNS(){
 }
 
 void setHostname(){
-    WiFi.hostname("eldisplay");
+    WiFi.setHostname("eldisplay");
 }
 
 
 void setupWebServer(AsyncWebServer &server) {
 
-
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(LittleFS, "/index.html", "text/html");
+        String html = LittleFS.open("/index.html", "r").readString();
+        html.replace("{{area}}", electricityPriceArea);
+        html.replace("{{threshold}}", String(priceThreshold));
+        html.replace("{{tax}}", shouldAddTax ? "checked" : "");
+        request->send(200, "text/html", html);
     });
 
     server.onNotFound([](AsyncWebServerRequest *request){
