@@ -7,21 +7,16 @@
 #include <WiFiUdp.h>
 
 
-#include <ESPAsyncWebServer.h>     //Local WebServer used to serve the configuration portal
-#include <ESPAsyncWiFiManager.h> 
 #include <user_config.h>
 #include <certs.h>
-#include <ESP8266mDNS.h>
-#include "webserverhandler.h"
-#include "Utils.h"
+
 #include "FileHandler.h"
+#include "NetworkHandler.h"
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
-DNSServer dns;          // Declaration of the DNS server
 
-
-AsyncWiFiManager wifiManager(&server,&dns);
+extern AsyncWebServer server;
 // Initialize the ILI9341 display 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 // NTP setup
@@ -67,8 +62,6 @@ void handleWiFiStatus(AsyncWiFiManager *myWiFiManage) {
 }
 
 
-// Webbservern på port 80
-AsyncWebServer server(80);
 
 void getElectricityPrices() {
   WiFiClientSecure client;
@@ -107,7 +100,6 @@ void getElectricityPrices() {
 
     int currentHour = timeClient.getHours();
     int hoursDisplayed = 0;
-    Serial.println(timeClient.getHours());
     for (size_t i = 0; i < json.size(); i++) {
       String timeStart(json[i]["time_start"]);
       int startOfHour = timeStart.substring(11,13).toInt(); //Split the time string and extract only the hour
@@ -182,26 +174,16 @@ void setup() {
   tft.setTextSize(2); // Text size
   tft.setCursor(10, 10); // Start at the top left
 
-  wifiManager.setAPCallback(handleWiFiStatus);
-  wifiManager.setMinimumSignalQuality(10);
-  wifiManager.autoConnect("Eldisplay","lampanlyser");
 
-
-  WiFi.hostname("eldisplay");
-
-  // Start mDNS at esp8266.local address
-   if (!MDNS.begin("eldisplay")) 
-   {             
-     Serial.println("Error starting mDNS");
-   }
+  initNetwork();
+  setupMDNS();
+  setHostname();
+  setupWebServer(server);
 
   // Initialize LittleFS
   if (!initializeFileSystem()) {
     return;
   }
-
-
-  setupWebServer(server);
 
 
   timeClient.begin();

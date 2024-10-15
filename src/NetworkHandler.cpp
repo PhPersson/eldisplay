@@ -1,19 +1,46 @@
-#include "WebServerHandler.h"
-#include "user_config.h"
-#include "FileHandler.h"
+#include "NetworkHandler.h"
 
+
+DNSServer dns; 
+AsyncWebServer server(80);
+AsyncWiFiManager wifiManager(&server, &dns);
 
 const char* PARAM_AREA = "area";
 const char* PARAM_THRESHOLD = "threshold";
 const char* PARAM_TAX = "tax";
 
+
+
+void initNetwork() {
+// wifiManager.setAPCallback(handleWiFiStatus);
+  wifiManager.setMinimumSignalQuality(10);
+  wifiManager.autoConnect("Eldisplay","lampanlyser");
+}
+
+
+void setupMDNS(){
+
+   if (!MDNS.begin("eldisplay")) 
+   {             
+     Serial.println("Error starting mDNS");
+   }
+}
+
+void setHostname(){
+    WiFi.hostname("eldisplay");
+}
+
+
 void setupWebServer(AsyncWebServer &server) {
+
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(LittleFS, "/index.html", "text/html");
     });
 
-    server.onNotFound(notFound);
+    server.onNotFound([](AsyncWebServerRequest *request){
+    request->send(404,"text/plain", "Not found");
+    });
 
     server.on("/update", HTTP_POST, [] (AsyncWebServerRequest *request) {
 
@@ -46,8 +73,4 @@ void setupWebServer(AsyncWebServer &server) {
     });
 
     server.begin();
-}
-
-void notFound(AsyncWebServerRequest *request) {
-    request->send(404, "text/plain", "Not found");
 }
