@@ -11,81 +11,66 @@ void initDisplay(){
     tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
     tft.setTextColor(ILI9341_WHITE); // Sets text color to white
     tft.setTextSize(2); // Text size
-    tft.setCursor(10, 10); // Start at the top left
 }
 
 
 void displayConnectedMessage(){
     tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(10, 10);
+    tft.setCursor(10, 60);
     tft.setTextColor(ILI9341_GREEN);
     tft.println("Connected to WiFi");
 }
 
 void displayConnectionFailedMessage(){
     tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(20, 10);
-    tft.setTextColor(ILI9341_RED);
-    tft.println("Connect to AP:");
-    tft.setCursor(20, 50);
+    tft.setCursor(10, 60);
+    tft.printf("Connect to AP:");
+    tft.setCursor(10, 90);
     tft.setTextColor(ILI9341_YELLOW);
     tft.println("Eldisplay");
 }
 
 void displayHttpErrorMessage(int httpCode){
-    tft.fillScreen(ILI9341_BLACK);
-    Serial.print("Error on HTTP request: ");
-    Serial.println(httpCode);
-    tft.setCursor(10, 60);
     tft.setTextColor(ILI9341_RED);
-    tft.println("Error when requesting API");
+    tft.setTextSize(2);  // Increase the text size for better visibility
+    
+    tft.setCursor(10, 60);
+    tft.println("API Request Error");
+    
+    // Display the HTTP error code
+    tft.setCursor(10, 90);
+    tft.print("HTTP Code: ");
+    tft.println(httpCode);
 }
 
 void displayMDNS(){
     tft.setTextColor(ILI9341_WHITE); // Sets text color to white
     tft.setTextSize(1); // Text size
     tft.setCursor(80, tft.height() - 30);  // Adjust the x position as needed for centering
+    tft.setTextColor(ILI9341_LIGHTGREY);
     tft.print("eldisplay.local");
 }
 
 
 void displayNoValuesMessage(){
     tft.fillScreen(ILI9341_BLACK);
-    tft.setCursor(35, 60);
+    tft.setCursor(10, 60);
     tft.setTextColor(ILI9341_WHITE);
     tft.printf("To setup device\n");
-
-    tft.setCursor(35, 90);
+    tft.setCursor(10, 90);
+    tft.setTextColor(ILI9341_YELLOW);
     tft.printf("eldisplay.local\n");
 
 }
 
 
-void displayMessageCenter(String message){
-    tft.setTextColor(ILI9341_WHITE); // Sets text color to white
-    tft.setTextSize(2); // Text size
-    
-    // Calculate the width of the message in pixels
-    int16_t textWidth = message.length() * 6 * 2;  // 6 is the width of a character in the default font, '2' is the text size multiplier
-    
-    // Set the cursor to center horizontally
-    int16_t xPos = (tft.width() - textWidth) / 2;
-    int16_t yPos = (tft.height() - 16 * 2) / 2;  // 16 is the height of a character in the default font, '2' is the text size multiplier
-    
-    // Set cursor to the calculated position
-    tft.setCursor(xPos, yPos);
-    
-    // Print the message
-    tft.print(message);
-}
+void displayMessageCenter(String message){}
 
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor) {
 
     tft.setTextColor(textColor);
-
     // Calculate the Y position dynamically
     int yPos = 80 + (hoursDisplayed * 40);
-
 
     tft.setCursor(40, yPos);
     tft.printf("%02d: SEK: %.2f", startOfHour, totalSekPerKwh);
@@ -93,10 +78,26 @@ void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDispla
 
 
 void displayDeviceText(){
-    // Clear the screen before displaying data
     tft.fillScreen(ILI9341_BLACK);
-    tft.setTextSize(2); // Change the text size
+    tft.setTextSize(2);
     tft.setCursor(80, 30);
     tft.setTextColor(ILI9341_WHITE);
     tft.println("Elpris:");
+}
+
+
+void displayJsonError(const String& error) {
+
+    Serial.print("Failed to parse JSON: ");
+    Serial.println(error);
+    
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setTextColor(ILI9341_RED); 
+    tft.setTextSize(2);
+
+    tft.setCursor(10, 60);
+    tft.println("Error from API:");
+
+    tft.setCursor(10, 90);
+    tft.println(error);
 }

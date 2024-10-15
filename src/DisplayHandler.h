@@ -19,3 +19,5 @@ void displayMessageCenter(String message);
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
 
 void displayDeviceText();
+
+void displayJsonError(const String& error);

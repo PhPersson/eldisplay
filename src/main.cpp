@@ -45,16 +45,8 @@ void getElectricityPrices() {
     JsonDocument json;
     DeserializationError error = deserializeJson(json, payload);
 
-    if (error) { // If there's any error deseralize the json in the response
-      Serial.print("Failed to parse JSON: ");
-      Serial.println(error.c_str());
-      tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
-      tft.setCursor(10, 10);
-      tft.setTextColor(ILI9341_RED);
-      tft.println("Error from API");
-      tft.setCursor(10, 40);
-      tft.println(error.c_str());
-      return;
+    if (error) {
+      displayJsonError(error.c_str());
     }
 
     displayDeviceText();
@@ -76,7 +68,6 @@ void getElectricityPrices() {
           }
           totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
 
-
           uint16_t textColor = (totalSekPerKwh > priceThreshold) ? ILI9341_RED : ILI9341_GREEN;
 
           displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
@@ -89,21 +80,17 @@ void getElectricityPrices() {
         }
     }
 
+  } else {
+    displayHttpErrorMessage(httpCode);
   }
 
-  else {
-  displayHttpErrorMessage(httpCode);
-  }
   http.end();
   displayMDNS();
-
 }
 
 
 void setup() {
-  // Initialize serial communication
   Serial.begin(115200);
-
   
   initNetwork();
   setupMDNS();
