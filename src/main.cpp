@@ -12,6 +12,7 @@
 
 #include "FileHandler.h"
 #include "NetworkHandler.h"
+#include "DisplayHandler.h"
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;

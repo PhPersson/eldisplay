@@ -1,4 +1,5 @@
 #include "NetworkHandler.h"
+#include "DisplayHandler.h"
 
 
 DNSServer dns; 
@@ -12,14 +13,13 @@ const char* PARAM_TAX = "tax";
 
 
 void initNetwork() {
-// wifiManager.setAPCallback(handleWiFiStatus);
-  wifiManager.setMinimumSignalQuality(10);
-  wifiManager.autoConnect("Eldisplay","lampanlyser");
+    wifiManager.setAPCallback(handleWifiStatusMessage);
+    wifiManager.setMinimumSignalQuality(10);
+    wifiManager.autoConnect("Eldisplay","lampanlyser");
 }
 
 
 void setupMDNS(){
-
    if (!MDNS.begin("eldisplay")) 
    {             
      Serial.println("Error starting mDNS");
@@ -70,10 +70,17 @@ void setupWebServer(AsyncWebServer &server) {
         }
 
         saveBoolToLittleFS("/shouldAddTax.txt", shouldAddTax);
-
         delay(1000);
         ESP.restart();
     });
 
     server.begin();
+}
+
+void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage) {
+    if (WiFi.status() == WL_CONNECTED) {
+        displayConnectedMessage();
+    } else {
+        displayConnectionFailedMessage();
+    }
 }
