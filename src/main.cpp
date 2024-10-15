@@ -197,7 +197,7 @@ void setup() {
 
   // Initialize LittleFS
   if (!initializeFileSystem()) {
-    return;  // Stop if filesystem couldn't be mounted
+    return;
   }
 
 
@@ -205,18 +205,19 @@ void setup() {
 
 
   timeClient.begin();
-  timeClient.update(); // Update to get current time
+  timeClient.update(); 
+
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
 
   if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
       getElectricityPrices();
   } else {
-  tft.fillScreen(ILI9341_BLACK); // Clears the screen before displaying new text
+  tft.fillScreen(ILI9341_BLACK);
   tft.setCursor(10, 60);
   tft.setTextColor(ILI9341_RED);
   tft.print("No values defined");
-  tft.print("pen eldisplay.local");
+  tft.print("open eldisplay.local");
   tft.print("to define values");
 
   }
