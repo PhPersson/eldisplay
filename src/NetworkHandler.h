@@ -16,11 +16,9 @@ extern AsyncWebServer server;
 extern AsyncWiFiManager wifiManager;
 
 void initNetwork();
-void handleWiFiStatus();
-
 
 void setupMDNS();
 void setHostname();
 void setupWebServer(AsyncWebServer &server);
-
+void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
 #endif
