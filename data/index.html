@@ -12,16 +12,18 @@
     input[type='checkbox'] { margin-right: 10px; }
     input[type='submit'] { background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
     input[type='submit']:hover { background-color: #218838; }
-    #eloverforing, #elpris { display: none; }
+    #transferFeeContainer { display: none; } /* Döljer transferFee-container som standard */
   </style>
   <script>
-    function toggleElPris() {
+    function toggleTransferFee() {
       var eloverforingCheckbox = document.getElementById('eloverforingCheckbox');
-      var elprisDiv = document.getElementById('elpris');
+      var transferFeeContainer = document.getElementById('transferFeeContainer');
       if (eloverforingCheckbox.checked) {
-        elprisDiv.style.display = 'block';
+        transferFeeContainer.style.display = 'block'; // Visa transferFee-container
+        document.getElementById('transferFee').disabled = false; // Aktivera fältet
       } else {
-        elprisDiv.style.display = 'none';
+        transferFeeContainer.style.display = 'none'; // Göm transferFee-container
+        document.getElementById('transferFee').disabled = true; // Inaktivera fältet
       }
     }
   </script>
@@ -39,15 +41,13 @@
       <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in moms? (25%)
     </label><br>
 
-    <div id="eloverforing"> <!-- Added this div for eloverforing -->
-      <label for="eloverforingCheckbox">
-        <input type="checkbox" id="eloverforingCheckbox" name="eloverforingCheckbox" onclick="toggleElPris()"> Räkna in elöverföringsavgift?
-      </label><br>
-      
-      <div id="elpris">
-        <label for="transferFee">Elöverföringsavgift:</label>
-        <input type="number" id="transferFee" name="transferFee" step="0.01" placeholder="Ange elöverföringsavgiften"><br>
-      </div>
+    <label for="eloverforingCheckbox">
+      <input type="checkbox" id="eloverforingCheckbox" name="eloverforingCheckbox" onclick="toggleTransferFee()"> Räkna in elöverföringsavgift?
+    </label><br>
+
+    <div id="transferFeeContainer"> <!-- Container för transferFee -->
+      <label for="transferFee">Elöverföringsavgift:</label>
+      <input type="number" id="transferFee" name="transferFee" step="0.01" placeholder="Ange elöverföringsavgiften" disabled><br>
     </div>
 
     <input type="submit" value="Update">

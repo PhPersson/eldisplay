@@ -7,17 +7,20 @@
 #include <WiFiUdp.h>
 
 
+#include <ESPAsyncWebServer.h>     //Local WebServer used to serve the configuration portal
+#include <ESPAsyncWiFiManager.h> 
 #include <user_config.h>
 #include <certs.h>
-
+#include <ESP8266mDNS.h>
 #include "webserverhandler.h"
-#include <wifihandler.h>
-
-DNSServer dns;
+#include "Utils.h"
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
+DNSServer dns;          // Declaration of the DNS server
 
+
+AsyncWiFiManager wifiManager(&server,&dns);
 // Initialize the ILI9341 display 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 // NTP setup
@@ -31,6 +34,35 @@ String getCurrentDate(){
   char dateStr[12];
   strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
   return String(dateStr);
+}
+
+void displayConnectedMessage(){
+
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setCursor(10, 10);
+    tft.setTextColor(ILI9341_GREEN);
+    tft.println("Connected to WiFi");
+    tft.setTextColor(ILI9341_YELLOW);
+    tft.setCursor(10, 50);  
+}
+
+void displayConnectionFailedMessage(){
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setCursor(20, 10);
+    tft.setTextColor(ILI9341_RED);
+    tft.println("Connect to AP:");
+    tft.setCursor(20, 50);
+    tft.setTextColor(ILI9341_YELLOW);
+    tft.println("Eldisplay");
+}
+
+
+void handleWiFiStatus(AsyncWiFiManager *myWiFiManage) {
+    if (WiFi.status() == WL_CONNECTED) {
+        displayConnectedMessage();
+    } else {
+        displayConnectionFailedMessage();
+    }
 }
 
 
@@ -126,12 +158,13 @@ void getElectricityPrices() {
   http.end();
 
 
-  IPAddress ip = WiFi.localIP();
 
-  // Display IP address at the bottom center
+
+  tft.setTextColor(ILI9341_WHITE); // Sets text color to white
+  tft.setTextSize(2); // Text size
   tft.setCursor(10, tft.height() - 30);  // Adjust the x position as needed for centering
-  tft.print("IP: ");
-  tft.print(ip);
+  tft.print("eldisplay.local");
+
 
 }
 
@@ -147,45 +180,25 @@ void setup() {
   tft.setTextSize(2); // Text size
   tft.setCursor(10, 10); // Start at the top left
 
-
-  setupWiFi();
-
-  // AsyncWiFiManager wifiManager(&server,&dns);
-  // wifiManager.setAPCallback(configModeCallback);
-  // wifiManager.autoConnect("Eldisplay","lampanlyser");
+  wifiManager.setAPCallback(handleWiFiStatus);
+  wifiManager.setMinimumSignalQuality(10);
+  wifiManager.autoConnect("Eldisplay","lampanlyser");
 
 
-  // WiFi.hostname("eldisplay");
+  WiFi.hostname("eldisplay");
 
-  // // Start mDNS at esp8266.local address
-  //  if (!MDNS.begin("eldisplay")) 
-  //  {             
-  //    Serial.println("Error starting mDNS");
-  //  }
+  // Start mDNS at esp8266.local address
+   if (!MDNS.begin("eldisplay")) 
+   {             
+     Serial.println("Error starting mDNS");
+   }
 
-  //   // Begin LittleFS
-  // if (!LittleFS.begin())
-  // {
-  //   Serial.println("An Error has occurred while mounting LittleFS");
-  //   return;
-  // }
-
-  // if (WiFi.status() == WL_CONNECTED) {
-  //   tft.fillScreen(ILI9341_BLACK);
-  //   tft.setCursor(10, 10);
-  //   tft.setTextColor(ILI9341_GREEN);
-  //   tft.println("Connected to WiFi");
-  //   tft.setTextColor(ILI9341_YELLOW);
-  //   tft.setCursor(10, 50);
-  // } else {
-  //   tft.fillScreen(ILI9341_BLACK);
-  //   tft.setCursor(20, 10);
-  //   tft.setTextColor(ILI9341_RED);
-  //   tft.println("WiFi connection failed");
-  //   tft.println("Connect to AP:");
-  //   tft.setTextColor(ILI9341_YELLOW);
-  //   tft.println("Eldisplay");
-  // }
+    // Begin LittleFS
+  if (!LittleFS.begin())
+  {
+    Serial.println("An Error has occurred while mounting LittleFS");
+    return;
+  }
 
 
   timeClient.begin();
@@ -201,5 +214,4 @@ void setup() {
 
 void loop() {
   MDNS.update();
-
 }
