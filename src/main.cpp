@@ -14,6 +14,7 @@
 #include <ESP8266mDNS.h>
 #include "webserverhandler.h"
 #include "Utils.h"
+#include "FileHandler.h"
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
@@ -75,9 +76,10 @@ void getElectricityPrices() {
   client.setTrustAnchors(&trustedRoots);
   String url = api_url + getCurrentDate() + "_" + electricityPriceArea +".json"; // Dynamiclly use todays date using concatenation
   Serial.println(url);
+  delay(1000);
   http.begin(client,url);
   int httpCode = http.GET(); // Make request to the api
-  delay(1000);
+
 
   if (httpCode > 0) {
     String payload = http.getString();
@@ -161,8 +163,8 @@ void getElectricityPrices() {
 
 
   tft.setTextColor(ILI9341_WHITE); // Sets text color to white
-  tft.setTextSize(2); // Text size
-  tft.setCursor(10, tft.height() - 30);  // Adjust the x position as needed for centering
+  tft.setTextSize(1); // Text size
+  tft.setCursor(80, tft.height() - 30);  // Adjust the x position as needed for centering
   tft.print("eldisplay.local");
 
 
@@ -193,22 +195,33 @@ void setup() {
      Serial.println("Error starting mDNS");
    }
 
-    // Begin LittleFS
-  if (!LittleFS.begin())
-  {
-    Serial.println("An Error has occurred while mounting LittleFS");
+  // Initialize LittleFS
+  if (!initializeFileSystem()) {
     return;
   }
 
 
+  setupWebServer(server);
+
+
   timeClient.begin();
-  timeClient.update(); // Update to get current time
+  timeClient.update(); 
+
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
 
-  getElectricityPrices();
+  if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
+      getElectricityPrices();
+  } else {
+  tft.fillScreen(ILI9341_BLACK);
+  tft.setCursor(10, 60);
+  tft.setTextColor(ILI9341_RED);
+  tft.print("No values defined");
+  tft.print("open eldisplay.local");
+  tft.print("to define values");
 
-  setupWebServer(server);
+  }
+
 
 }
 
