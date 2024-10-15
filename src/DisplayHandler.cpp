@@ -2,7 +2,6 @@
 #include "user_config.h"
 
 
-
 // Initialize the ILI9341 display 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 
