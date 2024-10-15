@@ -53,9 +53,11 @@ void displayNoValuesMessage(){
     tft.fillScreen(ILI9341_BLACK);
     tft.setCursor(35, 60);
     tft.setTextColor(ILI9341_WHITE);
-    tft.println("To setup device");
+    tft.printf("To setup device\n");
+
     tft.setCursor(35, 90);
-    tft.println("eldisplay.local");
+    tft.printf("eldisplay.local\n");
+
 }
 
 
@@ -75,4 +77,26 @@ void displayMessageCenter(String message){
     
     // Print the message
     tft.print(message);
+}
+
+void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor) {
+
+    tft.setTextColor(textColor);
+
+    // Calculate the Y position dynamically
+    int yPos = 80 + (hoursDisplayed * 40);
+
+
+    tft.setCursor(40, yPos);
+    tft.printf("%02d: SEK: %.2f", startOfHour, totalSekPerKwh);
+}
+
+
+void displayDeviceText(){
+    // Clear the screen before displaying data
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setTextSize(2); // Change the text size
+    tft.setCursor(80, 30);
+    tft.setTextColor(ILI9341_WHITE);
+    tft.println("Elpris:");
 }

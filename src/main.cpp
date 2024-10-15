@@ -57,55 +57,39 @@ void getElectricityPrices() {
       return;
     }
 
-    // Clear the screen before displaying data
-    tft.fillScreen(ILI9341_BLACK);
-    tft.setTextSize(2); // Change the text size
-    tft.setCursor(80, 30);
-    tft.setTextColor(ILI9341_WHITE);
-    tft.println("Elpris:");
+    displayDeviceText();
 
     int currentHour = timeClient.getHours();
     int hoursDisplayed = 0;
     for (size_t i = 0; i < json.size(); i++) {
-      String timeStart(json[i]["time_start"]);
-      int startOfHour = timeStart.substring(11,13).toInt(); //Split the time string and extract only the hour
-    
+        String timeStart(json[i]["time_start"]);
+        int startOfHour = timeStart.substring(11, 13).toInt(); 
 
-      // Check if the current hour or next two hours are matched
-      if (startOfHour == currentHour || startOfHour == (currentHour + 1) % 24 || startOfHour == (currentHour + 2) % 24) {
-      float sekPerKwh = json[i]["SEK_per_kWh"];
-      float totalSekPerKwh = 0;
+        if (startOfHour == currentHour || startOfHour == (currentHour + 1) % 24 || startOfHour == (currentHour + 2) % 24) {
+          float sekPerKwh = json[i]["SEK_per_kWh"];
+          float totalSekPerKwh = 0;
 
-
-      if (shouldAddTax) {
-          totalSekPerKwh = sekPerKwh * 1.25; // 25% tax
-      } else {
-          totalSekPerKwh = sekPerKwh;
-      }
-
-      totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0; // Round to 2 decimal places
+          if (shouldAddTax) {
+              totalSekPerKwh = sekPerKwh * 1.25; // 25% tax
+          } else {
+              totalSekPerKwh = sekPerKwh;
+          }
+          totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
 
 
-      // Set text color based on price threshold
-      if (totalSekPerKwh > priceThreshold) {
-        tft.setTextColor(ILI9341_RED); 
-      } else {
-        tft.setTextColor(ILI9341_GREEN);
-      }
+          uint16_t textColor = (totalSekPerKwh > priceThreshold) ? ILI9341_RED : ILI9341_GREEN;
 
+          displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
 
-      // Display the extracted data
-      tft.setCursor(40, 80 + (hoursDisplayed * 40));
-      tft.printf("%02d: SEK: %.2f", startOfHour, totalSekPerKwh);
-      hoursDisplayed++;
+          hoursDisplayed++;
 
-        if (hoursDisplayed >= 3) {
-          break;
+          if (hoursDisplayed >= 3) {
+              break;
+          }
         }
-      }
     }
-  }
 
+  }
 
   else {
   displayHttpErrorMessage(httpCode);

@@ -4,7 +4,6 @@ extern Adafruit_ILI9341 tft;
 
 void initDisplay();
 
-
 void displayConnectedMessage();
 
 void displayConnectionFailedMessage();
@@ -16,3 +15,7 @@ void displayMDNS();
 void displayNoValuesMessage();
 
 void displayMessageCenter(String message);
+
+void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
+
+void displayDeviceText();
