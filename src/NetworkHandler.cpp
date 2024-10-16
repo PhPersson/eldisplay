@@ -13,8 +13,9 @@ const char* PARAM_TAX = "tax";
 
 
 void initNetwork() {
-    wifiManager.setAPCallback(handleWifiStatusMessage);
-    wifiManager.setMinimumSignalQuality(10);
+    // wifiManager.setAPCallback(handleWifiStatusMessage);
+    
+    // wifiManager.setMinimumSignalQuality(10);
     wifiManager.autoConnect("Eldisplay","lampanlyser");
 }
 

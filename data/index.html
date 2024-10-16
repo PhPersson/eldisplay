@@ -18,10 +18,10 @@
   <h1>Settings</h1>
   <form action="/config" method="POST">
     <label for="area">Elprisområde:</label>
-    <input type="text" id="area" name="area" value="{{area}}" placeholder="Ange elprisområde"><br>
+    <input type="text" id="area" name="area" value="{{area}}" minlength="3" maxlength="3" required placeholder="Ange elprisområde (SE1,SE2,SE3,SE4)"><br>
 
     <label for="threshold">Högt elpris:</label>
-    <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange högt elpris"><br>
+    <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange när elpriset ska räknas som högt"><br>
 
     <label for="tax">
       <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in moms? (25%)
