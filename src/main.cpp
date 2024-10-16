@@ -20,24 +20,25 @@ extern AsyncWebServer server;
 WiFiUDP udp;
 NTPClient timeClient(udp, "pool.ntp.org", 7200); // UTC+1
 
-String getCurrentDate(){
+const char* getCurrentDate(){
   time_t rawTime = timeClient.getEpochTime();
   struct tm *ptm = gmtime(&rawTime);
 
-  char dateStr[12];
+  static char dateStr[12];
   strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
-  return String(dateStr);
+  return dateStr;
 }
 
 void getElectricityPrices() {
   WiFiClientSecure client;
   HTTPClient http;
   client.setTrustAnchors(&trustedRoots);
-  String url = api_url + getCurrentDate() + "_" + electricityPriceArea +".json"; // Dynamiclly use todays date using concatenation
+  char url[100];
+  snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), electricityPriceArea);
   Serial.println(url);
   delay(1000);
   http.begin(client,url);
-  int httpCode = http.GET(); // Make request to the api
+  int httpCode = http.GET();
 
 
   if (httpCode > 0) {
@@ -109,6 +110,7 @@ void setup() {
   trustedRoots.append(cert_ISRG_X2);
 
   initDisplay();
+  Serial.println("Data från: elprisetjustnu.se");
 
   if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
     getElectricityPrices();
