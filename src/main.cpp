@@ -2,8 +2,7 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
-#include <NTPClient.h>
-#include <WiFiUdp.h>
+
 
 #include <user_config.h>
 #include <certs.h>
@@ -11,23 +10,12 @@
 #include "FileHandler.h"
 #include "NetworkHandler.h"
 #include "DisplayHandler.h"
+#include "TimeHandler.h"
 
 // Adds trsuted root-certs
 BearSSL::X509List trustedRoots;
 
 extern AsyncWebServer server;
-// NTP setup
-WiFiUDP udp;
-NTPClient timeClient(udp, "pool.ntp.org", 7200); // UTC+1
-
-const char* getCurrentDate(){
-  time_t rawTime = timeClient.getEpochTime();
-  struct tm *ptm = gmtime(&rawTime);
-
-  static char dateStr[12];
-  strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
-  return dateStr;
-}
 
 void getElectricityPrices() {
   WiFiClientSecure client;
@@ -103,15 +91,14 @@ void setup() {
     return;
   }
 
-  timeClient.begin();
-  timeClient.update(); 
-
   trustedRoots.append(cert_ISRG_X1);
   trustedRoots.append(cert_ISRG_X2);
 
   initDisplay();
-  Serial.println("Data från: elprisetjustnu.se");
+  initTime();
 
+  Serial.println("Data från: elprisetjustnu.se");
+  delay(500);
   if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
     getElectricityPrices();
   } else {
