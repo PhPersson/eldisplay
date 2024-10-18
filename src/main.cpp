@@ -108,5 +108,6 @@ void setup() {
 }
 
 void loop() {
+  MDNS.update();
 
 }
