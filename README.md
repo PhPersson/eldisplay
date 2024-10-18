@@ -26,6 +26,12 @@ LED       -> 3.3V
 
 ## Configuration Steps
 
+### UI
+Configuration is available to setup using a simple ui. Go to __eldisplay.local__ to configure the device.
+
+<img src="https://github.com/PhPersson/eldisplay/blob/main/images/ui.png"  height=450 >
+
+### Manually
 1. **Locate the Configuration File**  
    Find the `user_config.template.h` file in your project directory. __Rename it to__ `user_config.h`.
 
@@ -52,6 +58,7 @@ LED       -> 3.3V
 // bool shouldAddTax = true; // false if not include tax
 ```
 
-### UI
-The above configuration is also available to setup using a simple ui. Go to __eldisplay.local__ to configure the device. 
-![](https://github.com/PhPersson/eldisplay/blob/main/images/ui.png)
+### Error on setup
+   If there's any error during setup or boot, the device will tell you to go to __eldisplay.local__ to configure the device
+<img src="https://github.com/PhPersson/eldisplay/blob/main/images/setup_error.jpeg" width=400 height=450 >
+
