@@ -1,7 +1,7 @@
-# powereisplay
+# Eldisplay
 
 
-Powerdiplsay is a small display  powered by and ESP8266 that shows the current electricity prices in sweden. The software pulls the data from [elprisetjustnu.se](https://www.elprisetjustnu.se)
+Eldisplay is a small display  powered by and ESP8266 that shows the current electricity prices in sweden. The software pulls the data from [elprisetjustnu.se](https://www.elprisetjustnu.se)
 
 
 The hardware consists of an ESP8266 and an 2.8" ILI9341 display.
