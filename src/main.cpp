@@ -3,7 +3,6 @@
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
 
-
 #include <user_config.h>
 #include <certs.h>
 
@@ -16,6 +15,8 @@
 BearSSL::X509List trustedRoots;
 
 extern AsyncWebServer server;
+unsigned long lastMillis = 0;
+bool apiFetchedThisHour = false;
 
 void getElectricityPrices() {
   WiFiClientSecure client;
@@ -23,7 +24,6 @@ void getElectricityPrices() {
   client.setTrustAnchors(&trustedRoots);
   char url[100];
   snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), electricityPriceArea);
-  Serial.println(url);
   delay(1000);
   http.begin(client,url);
   int httpCode = http.GET();
@@ -108,6 +108,24 @@ void setup() {
 }
 
 void loop() {
+
   MDNS.update();
 
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - lastMillis >= 60000) {
+    lastMillis = currentMillis;
+
+    timeClient.update();
+    int currentMinute = timeClient.getMinutes();
+
+    if (currentMinute == 5 && !apiFetchedThisHour) {
+      getElectricityPrices(); 
+      apiFetchedThisHour = true;   
+    }
+
+    if (currentMinute != 5) {
+      apiFetchedThisHour = false;
+    }
+  }
 }
