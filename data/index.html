@@ -15,7 +15,7 @@
   </style>
 </head>
 <body>
-  <h1>Settings</h1>
+  <h1>Inställningar</h1>
   <form action="/config" method="POST">
     <label for="area">Elprisområde:</label>
     <input type="text" id="area" name="area" value="{{area}}" minlength="3" maxlength="3" required placeholder="Ange elprisområde (SE1,SE2,SE3,SE4)"><br>
@@ -27,7 +27,7 @@
       <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in moms? (25%)
     </label><br>
 
-    <input type="submit" value="Update">
+    <input type="submit" value="Spara">
   </form>
 </body>
 </html>
