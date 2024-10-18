@@ -10,10 +10,9 @@
 #include "FileHandler.h"
 #include "LittleFS.h"
 
-
-extern DNSServer dns; 
 extern AsyncWebServer server;
 extern AsyncWiFiManager wifiManager;
+
 
 void initNetwork();
 void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
@@ -22,4 +21,6 @@ void setupMDNS();
 void setHostname();
 void setupWebServer(AsyncWebServer &server);
 void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
+
+
 #endif
