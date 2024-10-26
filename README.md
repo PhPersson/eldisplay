@@ -1,14 +1,54 @@
-# Eldisplay
+<h1 align="center">
+  <br>
+  <a href="http://www.amitmerchant.com/electron-markdownify"><img src="https://github.com/PhPersson/eldisplay/blob/main/images/logo.png" alt="logo height="300" width="300"></a>
+</h1>
 
-Eldisplay is a small display  powered by and ESP8266 that shows the current electricity prices in sweden. The software pulls the data from [elprisetjustnu.se](https://www.elprisetjustnu.se)
+<h4 align="center">Eldisplay is a small display powered by and ESP8266 that shows the current electricity prices in sweden.</a>.</h4>
+<p align="center">
+   •
+  <a href="#what-is-eldisplay">•What's Eldisplay?</a> •
+  <a href="#how-to-setup">How To Setup</a> •
+  <a href="#hardware">Hardware</a>
+</p>
 
+## What is eldisplay?
+Eldisplay is an project designed to provide real-time electricity pricing information. The system connects to WiFi and offers a user-friendly web interface that allows users to select their specific price region, ensuring they receive accurate electricity prices.
 
-The hardware consists of an ESP8266 and an 2.8" ILI9341 display.
+The primary goal of Eldisplay is to simplify the process of monitoring electricity rates, eliminating the need for users to open a mobile application just to check prices before running appliances like washing machines or dishwashers. By providing instant access to the current electricity pricing for the hour and the next two hours, Eldisplay empowers users to make informed decisions about their energy consumption, ultimately helping them save on utility costs.
 
-| ![Image 1](https://github.com/PhPersson/eldisplay/raw/main/images/eldisplay.jpeg) | ![Image 2](https://github.com/PhPersson/eldisplay/raw/main/images/eldisplay_below.jpeg) |
-|---|---|
+Key features of Eldisplay include:
 
-## Wiring of the ILI9341 display:
+* Real-Time Pricing: Displays live electricity prices for the current hour and the following two hours.
+* Region Selection: Allows users to configure settings based on their geographical area, ensuring accurate pricing information.
+* Web Interface: A straightforward interface for easy configuration.
+
+With Eldisplay, users can optimize their energy usage, making it an essential tool for anyone looking to manage their electricity consumption efficiently.
+
+<a href=""><img  src="https://github.com/PhPersson/eldisplay/raw/main/images/eldisplay.jpeg" alt="" height="40%" width="40%"></a>
+
+## How To Setup
+
+1. **Download the Binary:**
+   - Go to the [release page](https://github.com/PhPersson/eldisplay/releases) and download the latest `.bin` file for Eldisplay.
+
+2. **Install the Binary:**
+   - Use [ESPHome Web](https://web.esphome.io/) to upload the `.bin` file to your ESP8266.
+   - Follow the tool's instructions to select the correct COM port and upload the firmware.
+
+3. **Access the Web Interface:**
+   - Once the upload is complete connect to eldisplays AP
+   - Once connected to WiFi, go to __eldisplay.local__ to configure the device.
+
+<img src="https://github.com/PhPersson/eldisplay/blob/main/images/setup_error.jpeg" width=40% height=40% >
+
+## Hardware
+<a href=""><img src="https://github.com/PhPersson/eldisplay/raw/main/images/eldisplay_below.jpeg" alt="" height="40%" width="40%"></a>
+
+1. **Hardware Requirements:**
+   - ESP8266 microcontroller.
+   - ILI9341 display module.
+   - Power supply for the ESP8266 and display.
+   - Jumper wires for connections.
 
 ```
 ILI9341   -> ESP8266
@@ -21,43 +61,3 @@ SDI(MOSI) -> D7
 SCK       -> D5
 LED       -> 3.3V
 ```
-
-
-## Configuration Steps
-
-### UI
-Configuration is available to setup using a simple ui. Go to __eldisplay.local__ to configure the device.
-
-<img src="https://github.com/PhPersson/eldisplay/blob/main/images/ui.png"  height=450 >
-
-### Manually
-1. **Locate the Configuration File**  
-   Find the `user_config.template.h` file in your project directory. __Rename it to__ `user_config.h`.
-
-2. **Set the API URL**  
-   You need to specify the API URL to fetch the price data. Locate the following line in the file:
-
-```cpp
-// char api_url[45] = "";  // API-url to fetch the price
-```
-3. **Set your price area**  
-   You need to specify wich electricity price area you are located in. Currently it only supports swedish areas, SE1, SE2, SE3 or SE4:
-```cpp
-// char electricityPriceArea[4] = ""; // Any of SE1, SE2, SE3 or SE4
-```
-
-4. **Set high electricyty price**  
-   Set a defualt value when u want the price to be consider high.
-```cpp
-// float priceThreshold = 0.30; // The threshold when price should be considered high
-```
-5. **Add tax**  
-   Set as true if u want to include tax in the displayed price (25%)
-```cpp
-// bool shouldAddTax = true; // false if not include tax
-```
-
-### Error on setup
-   If there's any error during setup or boot, the device will tell you to go to __eldisplay.local__ to configure the device
-<img src="https://github.com/PhPersson/eldisplay/blob/main/images/setup_error.jpeg" width=400 height=450 >
-
