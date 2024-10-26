@@ -17,8 +17,6 @@ Eldisplay föddes ur en enkel insikt: det kändes onödigt att behöva plocka up
 
 Därför skapades Eldisplay – en lösning som syftar till att förenkla processen för att övervaka elpriser. Genom att erbjuda omedelbar åtkomst till aktuella elpriser för den nuvarande timmen och de följande två timmarna, gör Eldisplay det möjligt för användare att fatta informerade beslut om sin energiförbrukning. Det eliminerar behovet av att öppna en mobilapplikation varje gång, vilket inte bara sparar tid utan också bidrar till att spara på elräkningarna.
 
-Med Eldisplay kan användare enkelt och snabbt se priserna, vilket gör energihanteringen mer effektiv och bekväm. 
-
 
 Funktioner i Eldisplay:
 
