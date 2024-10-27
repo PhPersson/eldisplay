@@ -10,7 +10,7 @@
   <a href="#hårdvara">Hårdvara</a>
 </p>
 
-[English](README-en.md)
+_README in [English](README-en.md)_
 
 
 
