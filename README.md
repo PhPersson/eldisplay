@@ -5,7 +5,6 @@
 
 <h4 align="center">Eldisplay är en liten display som drivs av en ESP8266 och visar de aktuella elpriserna i Sverige.</h4>
 <p align="center">
-   •
   <a href="#vad-ar-eldisplay">•Vad är Eldisplay?</a> •
   <a href="#hur-man-installera">Hur man installerar</a> •
   <a href="#hårdvara">Hårdvara</a>
@@ -44,7 +43,7 @@ Funktioner i Eldisplay:
 ## Hårdvara
 <a href=""><img src="https://github.com/PhPersson/eldisplay/raw/main/images/eldisplay_below.jpeg" alt="" height="40%" width="40%"></a>
 
-1. **Hårdvarukrav:**
+1. **Hårdvara:**
    - ESP8266 mikrokontroller.
    - ILI9341 display.
    - Strömförsörjning för ESP8266 och displayen.
