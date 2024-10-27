@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://www.amitmerchant.com/electron-markdownify"><img src="https://github.com/PhPersson/eldisplay/blob/main/images/logo.png" alt="logo height="300" width="300"></a>
+  <a href=""><img src="https://github.com/PhPersson/eldisplay/blob/main/images/logo.png" alt="logo height="300" width="300"></a>
 </h1>
 
 <h4 align="center">Eldisplay är en liten display som drivs av en ESP8266 och visar de aktuella elpriserna i Sverige.</h4>
@@ -9,6 +9,9 @@
   <a href="#hur-man-installera">Hur man installerar</a> •
   <a href="#hårdvara">Hårdvara</a>
 </p>
+
+<p align="left"></p>
+[here](README-en.md)
 
 ## Vad är Eldisplay?
 
