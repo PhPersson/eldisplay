@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8"> 
   <title>Eldisplay</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; }
     form { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 400px; margin: auto; }
@@ -11,21 +12,40 @@
     input[type='text'], input[type='number'], input[type='submit'] { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
     input[type='checkbox'] { margin-right: 10px; }
     input[type='submit'] { background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
-    input[type='submit']:hover { background-color: #218838; }
+    input[type='submit']:hover { background-color: #218838; };
+
+    /* Mobile styling */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      form {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 1.2em;
+      }
+      input[type='text'],
+      input[type='number'],
+      input[type='submit'] {
+        font-size: 1em;
+        padding: 8px;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>Inställningar</h1>
   <form action="/config" method="POST">
     <label for="area">Elprisområde:</label>
-    <input type="text" id="area" name="area" value="{{area}}" minlength="3" maxlength="3" required placeholder="Ange elprisområde (SE1,SE2,SE3,SE4)"><br>
+    <input type="text" id="area" name="area" value="{{area}}" minlength="3" maxlength="3" required placeholder="Ange elprisområde (SE1,SE2,SE3,SE4)">
 
     <label for="threshold">Högt elpris:</label>
-    <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange när elpriset ska räknas som högt"><br>
+    <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange när elpriset ska räknas som högt">
 
     <label for="tax">
       <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in moms? (25%)
-    </label><br>
+    </label>
 
     <input type="submit" value="Spara">
   </form>
