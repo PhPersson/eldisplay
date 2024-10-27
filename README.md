@@ -10,8 +10,9 @@
   <a href="#hårdvara">Hårdvara</a>
 </p>
 
-<p align="left"></p>
-[here](README-en.md)
+[English](README-en.md)
+
+
 
 ## Vad är Eldisplay?
 
