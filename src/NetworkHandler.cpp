@@ -5,6 +5,7 @@
 DNSServer dns; 
 AsyncWebServer server(80);
 AsyncWiFiManager wifiManager(&server, &dns);
+ESPAsyncHTTPUpdateServer _updateServer;
 
 const char* PARAM_AREA = "area";
 const char* PARAM_THRESHOLD = "threshold";
@@ -14,8 +15,6 @@ const char* PARAM_TAX = "tax";
 
 void initNetwork() {
     // wifiManager.setAPCallback(handleWifiStatusMessage);
-    
-    // wifiManager.setMinimumSignalQuality(10);
     wifiManager.autoConnect("Eldisplay","lampanlyser");
 }
 
@@ -32,8 +31,10 @@ void setHostname(){
 }
 
 
+
 void setupWebServer(AsyncWebServer &server) {
 
+    _updateServer.setup(&server, "/ota", "eldisplay", "billigel");
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
         String html = LittleFS.open("/index.html", "r").readString();
         html.replace("{{area}}", electricityPriceArea);

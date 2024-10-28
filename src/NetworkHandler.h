@@ -9,9 +9,11 @@
 #include "user_config.h"
 #include "FileHandler.h"
 #include "LittleFS.h"
+#include "ESPAsyncHTTPUpdateServer.h"
 
 extern AsyncWebServer server;
 extern AsyncWiFiManager wifiManager;
+extern ESPAsyncHTTPUpdateServer _updateServer;
 
 
 void initNetwork();
