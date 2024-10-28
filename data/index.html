@@ -3,31 +3,67 @@
 <head>
   <meta charset="UTF-8"> 
   <title>Eldisplay</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; }
-    form { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 400px; margin: auto; }
+    .form { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 400px; margin: auto; }
     h1 { text-align: center; color: #333; }
     label { display: block; margin-bottom: 10px; font-weight: bold; color: #555; }
-    input[type='text'], input[type='number'], input[type='submit'] { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
+    input[type='text'], input[type='number'] { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; }
     input[type='checkbox'] { margin-right: 10px; }
-    input[type='submit'] { background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
+
+
+    .button-container {
+      display: flex;
+      gap: 10px;
+    }
+    input[type='submit'], .button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+    }
+    input[type='submit'] { background-color: #28a745; }
     input[type='submit']:hover { background-color: #218838; }
+    .button { background-color: red; }
+    .button:hover { background-color: red; }
+
+    /* Mobile styling */
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      form { padding: 15px; }
+      h1 { font-size: 1.2em; }
+      input[type='text'], input[type='number'], .button-container > * {
+        font-size: 1em;
+        padding: 8px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Settings</h1>
-  <form action="/config" method="POST">
-    <label for="area">Elprisområde:</label>
-    <input type="text" id="area" name="area" value="{{area}}" minlength="3" maxlength="3" required placeholder="Ange elprisområde (SE1,SE2,SE3,SE4)"><br>
+  <h1>Inställningar</h1>
+  <div class="form">
+    <form action="/config" method="POST">
+      <label for="area">Elprisområde:</label>
+      <input type="text" id="area" name="area" value="{{area}}" minlength="3" maxlength="3" required placeholder="Ange elprisområde (SE1,SE2,SE3,SE4)">
 
-    <label for="threshold">Högt elpris:</label>
-    <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange när elpriset ska räknas som högt"><br>
+      <label for="threshold">Högt elpris:</label>
+      <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange när elpriset ska räknas som högt">
 
-    <label for="tax">
-      <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in moms? (25%)
-    </label><br>
+      <label for="tax">
+        <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in moms? (25%)
+      </label>
 
-    <input type="submit" value="Update">
-  </form>
+      <div class="button-container">
+        <input type="submit" value="Spara">
+        <a href="/ota" class="button">OTA</a>
+      </div>
+    </form>
+  </div>
 </body>
 </html>

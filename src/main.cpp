@@ -108,7 +108,6 @@ void setup() {
 }
 
 void loop() {
-
   MDNS.update();
 
   unsigned long currentMillis = millis();

@@ -9,11 +9,13 @@
 #include "user_config.h"
 #include "FileHandler.h"
 #include "LittleFS.h"
+#include "ESPAsyncHTTPUpdateServer.h"
 
 
 extern DNSServer dns; 
 extern AsyncWebServer server;
 extern AsyncWiFiManager wifiManager;
+extern ESPAsyncHTTPUpdateServer _updateServer;
 
 void initNetwork();
 void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
