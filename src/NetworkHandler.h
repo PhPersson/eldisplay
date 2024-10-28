@@ -11,11 +11,10 @@
 #include "LittleFS.h"
 #include "ESPAsyncHTTPUpdateServer.h"
 
-
-extern DNSServer dns; 
 extern AsyncWebServer server;
 extern AsyncWiFiManager wifiManager;
 extern ESPAsyncHTTPUpdateServer _updateServer;
+
 
 void initNetwork();
 void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
@@ -24,4 +23,6 @@ void setupMDNS();
 void setHostname();
 void setupWebServer(AsyncWebServer &server);
 void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
+
+
 #endif
