@@ -2,7 +2,7 @@
 
 
 WiFiUDP udp;
-NTPClient timeClient(udp, "pool.ntp.org", 7200); // UTC+1
+NTPClient timeClient(udp, "pool.ntp.org", 3600); // UTC+1
 
 const char* getCurrentDate(){
   time_t rawTime = timeClient.getEpochTime();
