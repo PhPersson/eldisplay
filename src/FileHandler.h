@@ -4,19 +4,19 @@
 #include <Arduino.h>
 
 // Function declarations for saving variables
-void saveCharToLittleFS(const char* filename, const char* value);
-void saveFloatToLittleFS(const char* filename, float value);
-void saveBoolToLittleFS(const char* filename, bool value);
+void saveChar(const char* filename, const char* value);
+void saveFloat(const char* filename, float value);
+void saveBool(const char* filename, bool value);
 
 // Function declarations for loading variables
-bool loadCharFromLittleFS(const char* filename, char* buffer, size_t len);
-bool loadFloatFromLittleFS(const char* filename, float& value);
-bool loadBoolFromLittleFS(const char* filename, bool& value);
+bool loadChar(const char* filename, char* buffer, size_t len);
+bool loadFloat(const char* filename, float& value);
+bool loadBool(const char* filename, bool& value);
 
 bool checkValues(char* electricityPriceArea, size_t areaLen, float& priceThreshold, bool& shouldAddTax);
 
+String loadHTML();
 
-// Initialize LittleFS
-bool initializeFileSystem();
+bool initializePreferences();
 
 #endif

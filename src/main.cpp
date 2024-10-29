@@ -89,6 +89,8 @@ void setup() {
   initNetwork();
   setupMDNS();
   setHostname();
+  initializePreferences();
+  
   setupWebServer(server);
 
 
