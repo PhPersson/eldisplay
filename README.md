@@ -24,7 +24,7 @@ Därför skapades Eldisplay – en lösning som syftar till att förenkla proces
 Funktioner i Eldisplay:
 
 * **Realtidspriser:** Visar aktuella elpriser för den aktuella timmen och de kommande två timmarna.
-* **Regionsval:** Gör det möjligt för användare att konfigurera inställningar baserat på sitt geografiska område, vilket säkerställer korrekt prisinformation.
+* **Regionsval:** Gör det möjligt för användare att konfigurera sitt aktuella elprisområde.
 * **Webbgränssnitt:** Ett gränssnitt för enkel konfiguration.
 
 <a href=""><img src="https://github.com/PhPersson/eldisplay/raw/main/images/eldisplay.jpeg" alt="" height="40%" width="40%"></a>
@@ -32,17 +32,24 @@ Funktioner i Eldisplay:
 ## Hur man installerar
 
 1. **Ladda ner .bin:**
-   - Gå till [release-sidan](https://github.com/PhPersson/eldisplay/releases) och ladda ner den senaste `.bin`-filen för Eldisplay.
+   - Gå till [release](https://github.com/PhPersson/eldisplay/releases) och ladda ner den senaste `.bin`-filen för Eldisplay.
 
 2. **Installera .bin:**
    - Använd [ESPHome Web](https://web.esphome.io/) för att ladda upp `.bin`-filen till din ESP8266.
    - Följ verktygets instruktioner för att välja rätt COM-port och ladda upp.
 
-3. **Åtkomst till webbgränssnittet:**
+3. **Konfigurera enheten**
    - När uppladdningen är klar, anslut till Eldisplays AP.
-   - När du är ansluten till WiFi, gå till __eldisplay.local__ för att konfigurera enheten.
+   - Följ anvisningarna och anslut eldisplay till WiFi.
+   - När du är ansluten till WiFi, gå till __eldisplay.local__ i valfri webbläsare för att konfigurera enheten.
+   - Webbgränsnittet låter dig att ändra ditt _elprisområde, när elpriset skall anses som högt, om 25% moms_ skall räknas in i priset som visas
 
-<img src="https://github.com/PhPersson/eldisplay/blob/main/images/setup_error.jpeg" width=40% height=40% >
+Webbgränsnitt           |  Eldisplay väntar på att slutföra konfigurering
+:-------------------------:|:-------------------------:
+![](images/ui.jpeg)  |  ![](/images/setup_error.jpeg)
+
+
+
 
 ## Hårdvara
 <a href=""><img src="https://github.com/PhPersson/eldisplay/raw/main/images/eldisplay_below.jpeg" alt="" height="40%" width="40%"></a>
