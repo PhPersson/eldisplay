@@ -18,6 +18,7 @@ const uint8_t index_html[] PROGMEM = {  0x1F, 0x8B, 0x08, 0x00, 0x00, 0x00, 0x00
 
 
 void initNetwork() {
+    wifiManager.setConnectTimeout(120);
     wifiManager.autoConnect("Eldisplay");
     if (!MDNS.begin("eldisplay")) 
    {             
