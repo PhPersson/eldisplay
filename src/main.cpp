@@ -91,11 +91,6 @@ void setup() {
   setHostname();
   setupWebServer(server);
 
-  // Initialize LittleFS
-  // if (!initializeFileSystem()) {
-  //   return;
-  // }
-  
 
   client.setCACert(cert_ISRG_X1);
   initDisplay();
