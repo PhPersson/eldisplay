@@ -83,5 +83,4 @@ String loadHTML() {
 void factoryReset() {
   preferences.clear();
   Serial.println("Preferences have been reset");
-
 }

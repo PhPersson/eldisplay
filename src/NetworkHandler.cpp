@@ -68,6 +68,14 @@ void setupWebServer(AsyncWebServer &server) {
         ESP.restart(); // Restart the ESP
     });
 
+
+    server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request){
+    factoryReset();
+    request->send(200, "text/plain", "Rebooting.....");
+    delay(5000);
+    ESP.restart();
+    });
+
     server.begin(); 
 }
 
