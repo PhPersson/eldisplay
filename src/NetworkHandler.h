@@ -14,11 +14,7 @@ extern ESPAsyncHTTPUpdateServer _updateServer;
 
 
 void initNetwork();
-void handleWifiStatusMessage();
-
-void setupMDNS();
-void setHostname();
 void setupWebServer(AsyncWebServer &server);
-
+void handleWifiStatusMessage();
 
 #endif

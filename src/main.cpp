@@ -87,12 +87,9 @@ void setup() {
   Serial.begin(115200);
   
   initNetwork();
-  setupMDNS();
-  setHostname();
-  initializePreferences();
-  
-  setupWebServer(server);
 
+  initializePreferences();
+  setupWebServer(server);
 
   client.setCACert(cert_ISRG_X1);
   initDisplay();
