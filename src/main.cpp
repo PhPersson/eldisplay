@@ -1,7 +1,8 @@
 #include <Arduino.h>
-#include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
+
+#include <HTTPClient.h>
 
 #include <user_config.h>
 #include <certs.h>
@@ -11,17 +12,20 @@
 #include "DisplayHandler.h"
 #include "TimeHandler.h"
 
-// Adds trsuted root-certs
-BearSSL::X509List trustedRoots;
+
+WiFiClientSecure client;
+
 
 extern AsyncWebServer server;
 unsigned long lastMillis = 0;
 bool apiFetchedThisHour = false;
 
 void getElectricityPrices() {
-  WiFiClientSecure client;
+
   HTTPClient http;
-  client.setTrustAnchors(&trustedRoots);
+
+  
+
   char url[100];
   snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), electricityPriceArea);
   delay(1000);
@@ -39,11 +43,12 @@ void getElectricityPrices() {
     }
 
     displayDeviceText();
-
+    serializeJson(json, Serial);
     int currentHour = timeClient.getHours();
     int hoursDisplayed = 0;
     for (size_t i = 0; i < json.size(); i++) {
-        String timeStart(json[i]["time_start"]);
+        String timeStart = json[i]["time_start"].as<String>();
+
         int startOfHour = timeStart.substring(11, 13).toInt(); 
 
         if (startOfHour == currentHour || startOfHour == (currentHour + 1) % 24 || startOfHour == (currentHour + 2) % 24) {
@@ -56,7 +61,7 @@ void getElectricityPrices() {
               totalSekPerKwh = sekPerKwh;
           }
           totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
-
+          
           uint16_t textColor = (totalSekPerKwh > priceThreshold) ? ILI9341_RED : ILI9341_GREEN;
 
           displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
@@ -87,29 +92,27 @@ void setup() {
   setupWebServer(server);
 
   // Initialize LittleFS
-  if (!initializeFileSystem()) {
-    return;
-  }
+  // if (!initializeFileSystem()) {
+  //   return;
+  // }
+  
 
-  trustedRoots.append(cert_ISRG_X1);
-  trustedRoots.append(cert_ISRG_X2);
-
+  client.setCACert(cert_ISRG_X1);
   initDisplay();
   initTime();
 
   Serial.println("Data från: elprisetjustnu.se");
   delay(500);
-  if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
-    getElectricityPrices();
-  } else {
-    displayNoValuesMessage();
-  }
+  getElectricityPrices();
+  // if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
+  //   getElectricityPrices();
+  // } else {
+  //   displayNoValuesMessage();
+  // }
 
 }
 
 void loop() {
-  MDNS.update();
-
   unsigned long currentMillis = millis();
 
   if (currentMillis - lastMillis >= 60000) {

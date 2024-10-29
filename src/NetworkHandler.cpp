@@ -2,9 +2,9 @@
 #include "DisplayHandler.h"
 
 
-DNSServer dns; 
+
 AsyncWebServer server(80);
-AsyncWiFiManager wifiManager(&server, &dns);
+WiFiManager wifiManager;
 ESPAsyncHTTPUpdateServer _updateServer;
 
 const char* PARAM_AREA = "area";
@@ -15,7 +15,8 @@ const char* PARAM_TAX = "tax";
 
 void initNetwork() {
     // wifiManager.setAPCallback(handleWifiStatusMessage);
-    wifiManager.autoConnect("Eldisplay","lampanlyser");
+    if(wifiManager.autoConnect("Eldisplay")){
+    }
 }
 
 
@@ -79,7 +80,7 @@ void setupWebServer(AsyncWebServer &server) {
     server.begin();
 }
 
-void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage) {
+void handleWifiStatusMessage() {
     if (WiFi.status() == WL_CONNECTED) {
         displayConnectedMessage();
     } else {

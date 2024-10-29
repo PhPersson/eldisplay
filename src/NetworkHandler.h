@@ -1,28 +1,29 @@
-
 #ifndef NETWORK_HANDLER_H
 #define NETWORK_HANDLER_H
-
+#include <WiFiManager.h>
 #include <DNSServer.h>
 #include <ESPAsyncWebServer.h>
-#include <ESPAsyncWiFiManager.h>
-#include <ESP8266mDNS.h>
-#include "user_config.h"
-#include "FileHandler.h"
 #include "LittleFS.h"
 #include "ESPAsyncHTTPUpdateServer.h"
+#include "user_config.h"
+#include "FileHandler.h"
+
+
+
+#include <ESPmDNS.h>
+
 
 extern AsyncWebServer server;
-extern AsyncWiFiManager wifiManager;
+extern WiFiManager wifiManager;
 extern ESPAsyncHTTPUpdateServer _updateServer;
 
 
 void initNetwork();
-void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
+void handleWifiStatusMessage(WiFiManager *myWiFiManage);
 
 void setupMDNS();
 void setHostname();
 void setupWebServer(AsyncWebServer &server);
-void handleWifiStatusMessage(AsyncWiFiManager *myWiFiManage);
 
 
 #endif

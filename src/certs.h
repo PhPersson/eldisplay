@@ -1,5 +1,5 @@
-#ifndef ESP8266_BASIC_WIFI_CERTS_H
-#define ESP8266_BASIC_WIFI_CERTS_H
+#ifndef CERTS_H
+#define CERTS_H
 
 const char cert_ISRG_X1 [] PROGMEM = R"CERT(
 -----BEGIN CERTIFICATE-----
