@@ -103,7 +103,6 @@ void setup() {
   // } else {
   //   displayNoValuesMessage();
   // }
-
 }
 
 void loop() {
@@ -124,4 +123,5 @@ void loop() {
       apiFetchedThisHour = false;
     }
   }
+  loopOTA();
 }
