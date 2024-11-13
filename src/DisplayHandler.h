@@ -1,6 +1,8 @@
-#include <Adafruit_ILI9341.h>
+// #include <Adafruit_ILI9341.h>
+#include <TFT_eSPI.h>
 
-extern Adafruit_ILI9341 tft;
+// extern Adafruit_ILI9341 tft;
+// extern TFT_eSPI tft;
 
 void initDisplay();
 
@@ -13,8 +15,6 @@ void displayHttpErrorMessage(int httpCode);
 void displayMDNS();
 
 void displayNoValuesMessage();
-
-void displayMessageCenter(String message);
 
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
 

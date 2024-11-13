@@ -62,7 +62,7 @@ void getElectricityPrices() {
           }
           totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
           
-          uint16_t textColor = (totalSekPerKwh > priceThreshold) ? ILI9341_RED : ILI9341_GREEN;
+          uint16_t textColor = (totalSekPerKwh > priceThreshold) ? TFT_RED : TFT_GREEN;
 
           displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
 
@@ -85,14 +85,14 @@ void getElectricityPrices() {
 
 void setup() {
   Serial.begin(115200);
-  
+  initDisplay();
+  delay(500);
   initNetwork();
-
+  delay(500);
   initializePreferences();
   setupWebServer(server);
-
   client.setCACert(cert_ISRG_X1);
-  initDisplay();
+  delay(500);
   initTime();
 
   Serial.println("Data från: elprisetjustnu.se");

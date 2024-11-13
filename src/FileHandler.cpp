@@ -80,7 +80,7 @@ String loadHTML() {
 // }
 
 // Factory reset function
-void factoryReset() {
+void clearPreferences() {
   preferences.clear();
   Serial.println("Preferences have been reset");
 }

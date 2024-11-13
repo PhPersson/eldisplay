@@ -13,6 +13,7 @@ extern WiFiManager wifiManager;
 
 void initNetwork();
 void setupWebServer(AsyncWebServer &server);
-void handleWifiStatusMessage();
+void handleWifiStatusMessage(WiFiManager *myWiFiManager);
 void loopOTA();
+void resetDevice();
 #endif

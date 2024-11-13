@@ -17,7 +17,9 @@ const uint8_t index_html[] PROGMEM = {
 
 void initNetwork() {
     wifiManager.setConnectTimeout(120);
+    wifiManager.setAPCallback(handleWifiStatusMessage);
     wifiManager.autoConnect("Eldisplay");
+    delay(2000);
     if (!MDNS.begin("eldisplay")) 
    {             
      Serial.println("Error starting mDNS");
@@ -51,26 +53,28 @@ void setupWebServer(AsyncWebServer &server) {
             saveFloat("priceThreshold", priceThreshold); // Save to Preferences
         }
 
-        shouldAddTax = request->hasParam(PARAM_TAX, true); // Simplified boolean assignment
+        shouldAddTax = request->hasParam(PARAM_TAX, true); 
         saveBool("shouldAddTax", shouldAddTax); // Save to Preferences
         
-        request->send(200, "text/plain", "Settings updated. Restarting..."); // Respond to the client
-        delay(1000); // Optional: give some time to see the message
-        ESP.restart(); // Restart the ESP
+        request->send(200, "text/plain", "Settings updated. Restarting..."); 
+        delay(1000); 
+        ESP.restart(); 
     });
 
 
     server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request){
-    factoryReset();
-    request->send(200, "text/plain", "Rebooting.....");
-        delay(5000);
-        ESP.restart();
+        AsyncWebServerResponse* response = request->beginResponse_P(200, "text/plain", "Reseting, device is Restarting...");
+                request->send(response);
+        delay(10000);
+        resetDevice();
+        
     });
+
     ElegantOTA.begin(&server);
     server.begin(); 
 }
 
-void handleWifiStatusMessage() {
+void handleWifiStatusMessage(WiFiManager *myWiFiManager) {
     if (WiFi.status() == WL_CONNECTED) {
         displayConnectedMessage();
     } else {
@@ -78,6 +82,15 @@ void handleWifiStatusMessage() {
     }
 }
 
+
 void loopOTA(){
     ElegantOTA.loop();
+}
+
+void resetDevice(){
+    clearPreferences();
+    delay(1000);
+    wifiManager.resetSettings();
+    delay(1000);
+    ESP.restart();
 }

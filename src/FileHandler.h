@@ -18,6 +18,6 @@ bool checkValues(char* electricityPriceArea, size_t areaLen, float& priceThresho
 String loadHTML();
 
 bool initializePreferences();
-void factoryReset();
+void clearPreferences();
 
 #endif
