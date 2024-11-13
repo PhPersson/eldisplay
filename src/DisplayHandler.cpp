@@ -15,20 +15,20 @@ void initDisplay() {
 void displayConnectedMessage() {
     tft.fillScreen(TFT_BLACK);
     tft.setTextColor(TFT_GREEN);
-    tft.drawString("Connected to WiFi", 10, 60);
+    tft.drawString("Connected to WiFi", 120, 30);
 }
 
 void displayConnectionFailedMessage() {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.drawString("Connect to AP:", 10, 60);
+    tft.drawString("Connect to AP:", 100, 30);
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.drawString("Eldisplay", 10, 90);
+    tft.drawString("Eldisplay", 100, 60);
 }
 
 void displayHttpErrorMessage(int httpCode) {
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
     tft.setTextSize(2); 
-    tft.drawString("API Request Error", 10, 60);
+    tft.drawString("API Request Error", 100, 60);
     tft.drawString("HTTP Code: " + String(httpCode), 10, 90);
 }
 
@@ -40,9 +40,9 @@ void displayMDNS() {
 
 void displayNoValuesMessage() {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.drawString("To setup device", 10, 60);
+    tft.drawString("To setup device", 100, 30);
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.drawString("eldisplay.local", 10, 90);
+    tft.drawString("eldisplay.local", 100, 60);
 }
 
 
