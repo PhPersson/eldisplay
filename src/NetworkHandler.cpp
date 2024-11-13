@@ -25,6 +25,7 @@ void initNetwork() {
      Serial.println("Error starting mDNS");
    }
    WiFi.setHostname("eldisplay");
+   clearDisplay();
 }
 
 void setupWebServer(AsyncWebServer &server) {

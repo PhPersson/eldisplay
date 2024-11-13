@@ -67,3 +67,7 @@ void displayJsonError(const String& error) {
     tft.drawString("Error from API:", 10, 60);
     tft.drawString(error, 10, 90);
 }
+
+void clearDisplay(){
+    tft.fillScreen(TFT_BLACK);
+}
