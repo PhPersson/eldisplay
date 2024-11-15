@@ -12,9 +12,7 @@
 #include "DisplayHandler.h"
 #include "TimeHandler.h"
 
-
 WiFiClientSecure client;
-
 
 extern AsyncWebServer server;
 unsigned long lastMillis = 0;
@@ -24,10 +22,8 @@ void getElectricityPrices() {
 
   HTTPClient http;
 
-  
-
   char url[100];
-  snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), electricityPriceArea);
+  snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), priceArea);
   delay(1000);
   http.begin(client,url);
   int httpCode = http.GET();
@@ -55,14 +51,14 @@ void getElectricityPrices() {
           float sekPerKwh = json[i]["SEK_per_kWh"];
           float totalSekPerKwh = 0;
 
-          if (shouldAddTax) {
+          if (addTax) {
               totalSekPerKwh = sekPerKwh * 1.25; // 25% tax
           } else {
               totalSekPerKwh = sekPerKwh;
           }
           totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
           
-          uint16_t textColor = (totalSekPerKwh > priceThreshold) ? TFT_RED : TFT_GREEN;
+          uint16_t textColor = (totalSekPerKwh > threshold) ? TFT_RED : TFT_GREEN;
 
           displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
 
@@ -90,19 +86,31 @@ void setup() {
   initNetwork();
   delay(500);
   initializePreferences();
+
   setupWebServer(server);
   client.setCACert(cert_ISRG_X1);
-  delay(500);
   initTime();
 
   Serial.println("Data från: elprisetjustnu.se");
   delay(500);
+
+  if (!loadChar("priceArea", priceArea, sizeof(priceArea))) {
+    Serial.println("Failed to load priceArea. Using default value: SE4");
+    strcpy(priceArea, "SE4"); // Använd standardvärde om laddning misslyckas
+  } 
+
+  if (!loadFloat("threshold", threshold)) {
+    Serial.println("Failed to load threshold. Using default: 0.30");
+    threshold = 0.30;
+  } 
+
+  if (!loadBool("addTax", addTax)) {
+    Serial.println("Failed to load addTax. Using default: true");
+    addTax = true;
+  }
+
+
   getElectricityPrices();
-  // if (checkValues(electricityPriceArea, sizeof(electricityPriceArea), priceThreshold, shouldAddTax)){
-  //   getElectricityPrices();
-  // } else {
-  //   displayNoValuesMessage();
-  // }
 }
 
 void loop() {

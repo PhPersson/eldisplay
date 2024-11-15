@@ -1,7 +1,6 @@
 #include "FileHandler.h"
 #include <Preferences.h>
 
-
 Preferences preferences;
 
 // Initialize Preferences
@@ -14,6 +13,7 @@ bool initializePreferences() {
 // Save char array to Preferences
 void saveChar(const char* key, const char* value) {
   preferences.putString(key, value);
+  Serial.printf("Saved %s with result: %d\n", key);
 }
 
 // Save float to Preferences
@@ -52,35 +52,7 @@ String loadHTML() {
     return preferences.getString("index_html", ""); // Default to empty string if not found
 }
 
-// // Load all settings from Preferences and ensure default values if loading fails
-// bool checkValues(char* electricityPriceArea, size_t areaLen, float& priceThreshold, bool& shouldAddTax) {
-//   bool success = true;
-
-//   if (!loadCharFromPreferences("electricityPriceArea", electricityPriceArea, areaLen)) {
-//     Serial.println("Error: Using default electricity price area: SE4");
-//     strcpy(electricityPriceArea, "SE4"); 
-//     success = false;
-//   }
-
-//   // Load the price threshold
-//   if (!loadFloatFromPreferences("priceThreshold", priceThreshold)) {
-//     Serial.println("Error: Using default price threshold: 0.30");
-//     priceThreshold = 0.30;  // Default value
-//     success = false;
-//   }
-
-//   // Load the tax inclusion setting
-//   if (!loadBoolFromPreferences("shouldAddTax", shouldAddTax)) {
-//     Serial.println("Error: Using default setting for tax inclusion: true");
-//     shouldAddTax = true;  // Default value
-//     success = false;
-//   }
-
-//   return success;
-// }
-
-// Factory reset function
 void clearPreferences() {
   preferences.clear();
-  Serial.println("Preferences have been reset");
+  preferences.end();
 }

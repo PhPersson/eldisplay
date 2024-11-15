@@ -28,13 +28,13 @@ void displayConnectionFailedMessage() {
 void displayHttpErrorMessage(int httpCode) {
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
     tft.setTextSize(2); 
-    tft.drawString("API Request Error", 100, 60);
-    tft.drawString("HTTP Code: " + String(httpCode), 10, 90);
+    tft.drawString("API Request Error", 100, 30);
+    tft.drawString("HTTP Code: " + String(httpCode), 100, 60);
 }
 
 void displayMDNS() {
     tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
-    tft.setTextSize(1); // Text size
+    tft.setTextSize(1);
     tft.drawString("eldisplay.local", 120, tft.height() - 30); 
 }
 

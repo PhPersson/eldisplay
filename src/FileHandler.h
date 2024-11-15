@@ -19,5 +19,6 @@ String loadHTML();
 
 bool initializePreferences();
 void clearPreferences();
+void resetDevice();
 
 #endif

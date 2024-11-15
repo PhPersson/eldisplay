@@ -1,8 +1,5 @@
-// #include <Adafruit_ILI9341.h>
 #include <TFT_eSPI.h>
 
-// extern Adafruit_ILI9341 tft;
-// extern TFT_eSPI tft;
 
 void initDisplay();
 
