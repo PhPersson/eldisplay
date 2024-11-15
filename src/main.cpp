@@ -96,7 +96,7 @@ void setup() {
 
   if (!loadChar("priceArea", priceArea, sizeof(priceArea))) {
     Serial.println("Failed to load priceArea. Using default value: SE4");
-    strcpy(priceArea, "SE4"); // Använd standardvärde om laddning misslyckas
+    strcpy(priceArea, "SE4");
   } 
 
   if (!loadFloat("threshold", threshold)) {
@@ -108,7 +108,6 @@ void setup() {
     Serial.println("Failed to load addTax. Using default: true");
     addTax = true;
   }
-
 
   getElectricityPrices();
 }

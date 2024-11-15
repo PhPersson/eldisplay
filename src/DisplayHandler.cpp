@@ -12,12 +12,6 @@ void initDisplay() {
     tft.setTextSize(2);
 }
 
-void displayConnectedMessage() {
-    tft.fillScreen(TFT_BLACK);
-    tft.setTextColor(TFT_GREEN);
-    tft.drawString("Connected to WiFi", 120, 30);
-}
-
 void displayConnectionFailedMessage() {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.drawString("Connect to AP:", 100, 30);
@@ -28,7 +22,7 @@ void displayConnectionFailedMessage() {
 void displayHttpErrorMessage(int httpCode) {
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
     tft.setTextSize(2); 
-    tft.drawString("API Request Error", 100, 30);
+    tft.drawString("API Error", 100, 30);
     tft.drawString("HTTP Code: " + String(httpCode), 100, 60);
 }
 

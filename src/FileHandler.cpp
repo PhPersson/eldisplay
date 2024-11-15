@@ -51,8 +51,3 @@ bool loadBool(const char* key, bool& value) {
 String loadHTML() {
     return preferences.getString("index_html", ""); // Default to empty string if not found
 }
-
-void clearPreferences() {
-  preferences.clear();
-  preferences.end();
-}
