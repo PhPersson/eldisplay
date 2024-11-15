@@ -59,6 +59,7 @@ void setupWebServer(AsyncWebServer &server) {
         if (request->hasParam(PARAM_THRESHOLD, true)) {
             threshold = request->getParam(PARAM_THRESHOLD, true)->value().toFloat();
             saveFloat("threshold", threshold);
+            Serial.println(threshold);
         }
 
         addTax = request->hasParam(PARAM_TAX, true); 

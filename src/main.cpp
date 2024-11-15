@@ -59,7 +59,7 @@ void getElectricityPrices() {
           }
           totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
           
-          uint16_t textColor = (totalSekPerKwh > threshold) ? TFT_RED : TFT_GREEN;
+          uint16_t textColor = (totalSekPerKwh > loadFloat("threshold", threshold)) ? TFT_RED : TFT_GREEN;
 
           displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
 
@@ -97,7 +97,6 @@ void setup() {
     displayNoValuesMessage(); 
     return;
   }
-
   getElectricityPrices();
 }
 

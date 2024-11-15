@@ -27,19 +27,23 @@ void saveBool(const char* key, bool value) {
 }
 
 // Load char array from Preferences
-bool loadChar(const char* key, char* buffer, size_t len) {
+char* loadChar(const char* key, char* buffer, size_t len) {
   String value = preferences.getString(key, "");
-  if (value.length() >= len) {
-    return false;
+
+  // Om strängen är tom eller om längden på strängen är för lång för bufferten
+  if (value.length() == 0 || value.length() >= len) {
+    return nullptr;  // Returnera null om något går fel
   }
+
+  // Kopiera strängen från String till buffer
   strcpy(buffer, value.c_str());
-  return true;
+  return buffer;  // Returnera pekaren till den laddade strängen
 }
 
 // Load float from Preferences
-bool loadFloat(const char* key, float& value) {
+float loadFloat(const char* key, float& value) {
   value = preferences.getFloat(key, 0.0);
-  return true;
+  return value;
 }
 
 // Load bool from Preferences

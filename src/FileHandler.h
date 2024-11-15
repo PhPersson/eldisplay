@@ -9,8 +9,8 @@ void saveFloat(const char* filename, float value);
 void saveBool(const char* filename, bool value);
 
 // Function declarations for loading variables
-bool loadChar(const char* filename, char* buffer, size_t len);
-bool loadFloat(const char* filename, float& value);
+char* loadChar(const char* filename, char* buffer, size_t len);
+float loadFloat(const char* filename, float& value);
 bool loadBool(const char* filename, bool& value);
 
 String loadHTML();
