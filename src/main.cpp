@@ -23,6 +23,7 @@ void getElectricityPrices() {
   HTTPClient http;
 
   char url[100];
+
   snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), priceArea);
   delay(1000);
   http.begin(client,url);
@@ -35,7 +36,7 @@ void getElectricityPrices() {
     DeserializationError error = deserializeJson(json, payload);
 
     if (error) {
-      displayJsonError(error.c_str());
+      Serial.println(error.c_str());
     }
 
     displayDeviceText();
@@ -78,7 +79,6 @@ void getElectricityPrices() {
   displayMDNS();
 }
 
-
 void setup() {
   Serial.begin(115200);
   initDisplay();
@@ -93,20 +93,9 @@ void setup() {
 
   Serial.println("Data från: elprisetjustnu.se");
   delay(500);
-
-  if (!loadChar("priceArea", priceArea, sizeof(priceArea))) {
-    Serial.println("Failed to load priceArea. Using default value: SE4");
-    strcpy(priceArea, "SE4");
-  } 
-
-  if (!loadFloat("threshold", threshold)) {
-    Serial.println("Failed to load threshold. Using default: 0.30");
-    threshold = 0.30;
-  } 
-
-  if (!loadBool("addTax", addTax)) {
-    Serial.println("Failed to load addTax. Using default: true");
-    addTax = true;
+  if (!loadChar("priceArea", priceArea, sizeof(priceArea)) || priceArea[0] == '\0') {
+    displayNoValuesMessage(); 
+    return;
   }
 
   getElectricityPrices();

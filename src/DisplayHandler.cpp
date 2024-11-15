@@ -1,7 +1,6 @@
 #include "DisplayHandler.h"
 #include "user_config.h"
 
-// Initialize the display 
 TFT_eSPI tft = TFT_eSPI();
 
 void initDisplay() {
@@ -14,9 +13,9 @@ void initDisplay() {
 
 void displayConnectionFailedMessage() {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.drawString("Connect to AP:", 100, 30);
+    tft.drawString("Connect to AP:", 80, 80);
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.drawString("Eldisplay", 100, 60);
+    tft.drawString("Eldisplay", 80, 120);
 }
 
 void displayHttpErrorMessage(int httpCode) {
@@ -34,9 +33,9 @@ void displayMDNS() {
 
 void displayNoValuesMessage() {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.drawString("To setup device", 100, 30);
+    tft.drawString("To setup device", 80, 80);
     tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.drawString("eldisplay.local", 100, 60);
+    tft.drawString("eldisplay.local", 80, 120);
 }
 
 
@@ -50,16 +49,6 @@ void displayDeviceText() {
     tft.setTextSize(2);
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.drawString("Elpris:", 120, 30);
-}
-
-void displayJsonError(const String& error) {
-    Serial.print("Failed to parse JSON: ");
-    Serial.println(error);
-    tft.fillScreen(TFT_BLACK);
-    tft.setTextColor(TFT_RED, TFT_BLACK); 
-    tft.setTextSize(2);
-    tft.drawString("Error from API:", 10, 60);
-    tft.drawString(error, 10, 90);
 }
 
 void clearDisplay(){

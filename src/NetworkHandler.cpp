@@ -23,6 +23,7 @@ void initNetwork() {
     wifiManager.setConnectTimeout(120);
     wifiManager.setAPCallback(handleWifiStatusMessage);
     wifiManager.autoConnect("Eldisplay");
+
     delay(2000);
     if (!MDNS.begin("eldisplay")) 
    {             
@@ -72,9 +73,7 @@ void setupWebServer(AsyncWebServer &server) {
 }
 
 void handleWifiStatusMessage(WiFiManager *myWiFiManager) {
-    if (!WiFi.status() == WL_CONNECTED) {
-        displayConnectionFailedMessage();
-    }
+    displayConnectionFailedMessage();
 }
 
 void loopOTA(){

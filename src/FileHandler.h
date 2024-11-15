@@ -13,12 +13,8 @@ bool loadChar(const char* filename, char* buffer, size_t len);
 bool loadFloat(const char* filename, float& value);
 bool loadBool(const char* filename, bool& value);
 
-bool checkValues(char* electricityPriceArea, size_t areaLen, float& priceThreshold, bool& shouldAddTax);
-
 String loadHTML();
 
 bool initializePreferences();
-void clearPreferences();
-void resetDevice();
 
 #endif
