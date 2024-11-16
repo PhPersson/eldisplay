@@ -16,5 +16,5 @@ bool loadBool(const char* filename, bool& value);
 String loadHTML();
 
 bool initializePreferences();
-
+bool checkValues(bool addTax, char* priceArea, float threshold);
 #endif

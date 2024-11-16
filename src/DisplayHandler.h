@@ -20,3 +20,5 @@ void displayDeviceText();
 void displayJsonError(const String& error);
 
 void clearDisplay();
+
+void displayUpdateMessage();

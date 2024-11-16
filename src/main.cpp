@@ -1,12 +1,9 @@
 #include <Arduino.h>
 #include <WiFiClientSecure.h>
 #include <ArduinoJson.h> 
-
 #include <HTTPClient.h>
-
 #include <user_config.h>
 #include <certs.h>
-
 #include "FileHandler.h"
 #include "NetworkHandler.h"
 #include "DisplayHandler.h"
@@ -19,16 +16,13 @@ unsigned long lastMillis = 0;
 bool apiFetchedThisHour = false;
 
 void getElectricityPrices() {
-
   HTTPClient http;
-
   char url[100];
 
   snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), priceArea);
   delay(1000);
   http.begin(client,url);
   int httpCode = http.GET();
-
 
   if (httpCode > 0) {
     String payload = http.getString();
@@ -53,18 +47,14 @@ void getElectricityPrices() {
           float totalSekPerKwh = 0;
 
           if (addTax) {
-              totalSekPerKwh = sekPerKwh * 1.25; // 25% tax
+              totalSekPerKwh = sekPerKwh * 1.25;
           } else {
               totalSekPerKwh = sekPerKwh;
           }
           totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
-          
           uint16_t textColor = (totalSekPerKwh > loadFloat("threshold", threshold)) ? TFT_RED : TFT_GREEN;
-
           displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
-
           hoursDisplayed++;
-
           if (hoursDisplayed >= 3) {
               break;
           }
@@ -93,11 +83,12 @@ void setup() {
 
   Serial.println("Data från: elprisetjustnu.se");
   delay(500);
-  if (!loadChar("priceArea", priceArea, sizeof(priceArea)) || priceArea[0] == '\0') {
+  if(!checkValues(addTax,priceArea,threshold)){
     displayNoValuesMessage(); 
     return;
+  } else{
+    getElectricityPrices();
   }
-  getElectricityPrices();
 }
 
 void loop() {

@@ -70,7 +70,9 @@ void setupWebServer(AsyncWebServer &server) {
     });
 
     ElegantOTA.begin(&server);
+    ElegantOTA.setAuth("root", "billigel");
     server.begin(); 
+    ElegantOTA.onStart(displayUpdateMessage);
 }
 
 void handleWifiStatusMessage(WiFiManager *myWiFiManager) {

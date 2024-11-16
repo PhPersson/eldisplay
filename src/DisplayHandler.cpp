@@ -54,3 +54,10 @@ void displayDeviceText() {
 void clearDisplay(){
     tft.fillScreen(TFT_BLACK);
 }
+
+void displayUpdateMessage(){
+    clearDisplay();
+    tft.setTextSize(2);
+    tft.setTextColor(TFT_RED, TFT_BLACK);
+    tft.drawString("Updating...", 80, 80);
+}
