@@ -16,5 +16,4 @@ void initNetwork();
 void setupWebServer(AsyncWebServer &server);
 void handleWifiStatusMessage(WiFiManager *myWiFiManager);
 void loopOTA();
-void resetDevice();
 #endif

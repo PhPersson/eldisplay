@@ -8,6 +8,7 @@
 #include "NetworkHandler.h"
 #include "DisplayHandler.h"
 #include "TimeHandler.h"
+#include "Utils.h"
 
 WiFiClientSecure client;
 
@@ -94,11 +95,7 @@ void setup() {
   }
 }
 
-void disableLED()
-{
-  pinMode(15, OUTPUT);
-  digitalWrite(15, LOW);
-}
+
 
 void loop() {
   unsigned long currentMillis = millis();
