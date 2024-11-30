@@ -52,10 +52,6 @@ String loadHTML() {
 
 bool checkValues(bool addTax, char* priceArea, float threshold){
 
-
-    Serial.println(loadChar("priceArea", priceArea, sizeof(priceArea)) || priceArea[0] == '\0');
-    Serial.println(loadFloat("threshold", threshold) || threshold <= 0.0);
-    Serial.println(loadBool("addTax", addTax));
     if (!loadChar("priceArea", priceArea, sizeof(priceArea)) || priceArea[0] == '\0') {
       return false;
     }

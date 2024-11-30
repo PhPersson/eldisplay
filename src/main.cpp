@@ -46,8 +46,8 @@ void getElectricityPrices() {
           float sekPerKwh = json[i]["SEK_per_kWh"];
           float totalSekPerKwh = 0;
 
-          if (addTax) {
-              totalSekPerKwh = sekPerKwh * 1.25;
+          if (loadBool("addTax", addTax)) {
+              totalSekPerKwh = sekPerKwh * 1.25 + 0.535; //25% moms + 53 öre/kWh
           } else {
               totalSekPerKwh = sekPerKwh;
           }
@@ -71,6 +71,8 @@ void getElectricityPrices() {
 
 void setup() {
   Serial.begin(115200);
+  Serial.setDebugOutput(true);
+  disableLED();
   initDisplay();
   delay(500);
   initNetwork();
@@ -87,8 +89,15 @@ void setup() {
     displayNoValuesMessage(); 
     return;
   } else{
-    getElectricityPrices();
+    displayNoValuesMessage();
+    // getElectricityPrices();
   }
+}
+
+void disableLED()
+{
+  pinMode(15, OUTPUT);
+  digitalWrite(15, LOW);
 }
 
 void loop() {
