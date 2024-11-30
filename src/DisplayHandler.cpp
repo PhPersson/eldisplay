@@ -6,25 +6,22 @@ TFT_eSPI tft = TFT_eSPI();
 void initDisplay() {
     tft.init();
     tft.setRotation(0);
-    pinMode(10, OUTPUT);  // Ställ in GPIO10 som en utgång
-    digitalWrite(10, HIGH);  // Sätt GPIO10 till HIGH
+    pinMode(10, OUTPUT);
+    digitalWrite(10, HIGH); 
     tft.fillScreen(TFT_BLACK);
     tft.setTextColor(TFT_WHITE);
     tft.setTextSize(2);
 }
 
 void displayConnectionFailedMessage() {
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.drawString("Connect to AP:", (tft.width() - 120) / 2, tft.height() / 2 - 40);
-    tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.drawString("Eldisplay", (tft.width() - 80) / 2, tft.height() / 2);
+    drawCenteredText(tft, "Connect to AP:", -20, TFT_WHITE, TFT_BLACK);
+    drawCenteredText(tft, "Eldisplay", 20, TFT_YELLOW, TFT_BLACK);
 }
 
 void displayHttpErrorMessage(int httpCode) {
-    tft.setTextColor(TFT_YELLOW, TFT_BLACK);
     tft.setTextSize(2); 
-    tft.drawString("API Error", (tft.width() - 90) / 2, tft.height() / 2 - 60);
-    tft.drawString("HTTP Code: " + String(httpCode), (tft.width() - 140) / 2, tft.height() / 2 - 20);
+    drawCenteredText(tft, "API Error", -20, TFT_YELLOW, TFT_BLACK);
+    drawCenteredText(tft, "HTTP Code: " + String(httpCode), 20, TFT_YELLOW, TFT_BLACK);
 }
 
 void displayMDNS() {
@@ -34,11 +31,8 @@ void displayMDNS() {
 }
 
 void displayNoValuesMessage() {
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.setTextSize(2);
-    tft.drawString("To setup device", (tft.width() - 120) / 2, tft.height() / 2 - 20);  // Fasta positioner för första raden
-    tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-    tft.drawString("eldisplay.local", (tft.width() - 120) / 2, tft.height() / 2 + 20);  // Fasta positioner för andra raden
+    drawCenteredText(tft, "Setup device at", -20, TFT_WHITE, TFT_BLACK);
+    drawCenteredText(tft, "eldisplay.local", 20, TFT_YELLOW, TFT_BLACK);
 }
 
 
@@ -62,6 +56,17 @@ void clearDisplay() {
 void displayUpdateMessage() {
     clearDisplay();
     tft.setTextSize(2);
-    tft.setTextColor(TFT_RED, TFT_BLACK);
-    tft.drawString("Updating...", (tft.width() - 140) / 2, tft.height() / 2 - 10);
+    drawCenteredText(tft, "Updating...", 0, TFT_RED, TFT_BLACK);
+
+}
+
+
+void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uint16_t textColor, uint16_t bgColor) {
+
+    tft.setTextColor(textColor, bgColor);
+
+    int16_t xCenter = (tft.width() - tft.textWidth(message)) / 2;
+    int16_t yCenter = (tft.height() - tft.fontHeight()) / 2 + yOffset;
+
+    tft.drawString(message, xCenter, yCenter);
 }

@@ -22,3 +22,4 @@ void displayJsonError(const String& error);
 void clearDisplay();
 
 void displayUpdateMessage();
+void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uint16_t textColor, uint16_t bgColor);
