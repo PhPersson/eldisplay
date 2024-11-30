@@ -11,7 +11,6 @@
 #include "Utils.h"
 
 WiFiClientSecure client;
-
 extern AsyncWebServer server;
 unsigned long lastMillis = 0;
 bool apiFetchedThisHour = false;
@@ -90,8 +89,7 @@ void setup() {
     displayNoValuesMessage(); 
     return;
   } else{
-    displayNoValuesMessage();
-    // getElectricityPrices();
+    getElectricityPrices();
   }
 }
 

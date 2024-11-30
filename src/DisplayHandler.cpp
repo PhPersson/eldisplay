@@ -57,7 +57,6 @@ void displayUpdateMessage() {
     clearDisplay();
     tft.setTextSize(2);
     drawCenteredText(tft, "Updating...", 0, TFT_RED, TFT_BLACK);
-
 }
 
 
