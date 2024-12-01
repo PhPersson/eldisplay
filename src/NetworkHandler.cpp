@@ -8,6 +8,7 @@ WiFiManager wifiManager;
 const char* PARAM_AREA = "area";
 const char* PARAM_THRESHOLD = "threshold";
 const char* PARAM_TAX = "tax";
+bool isScreenOn = false;    
 
 void initNetwork() {
     wifiManager.setConnectTimeout(120);
@@ -31,35 +32,44 @@ void setupWebServer(AsyncWebServer &server) {
     });
 
     server.on("/config", HTTP_POST, [](AsyncWebServerRequest *request) {
-
-        if (request->hasParam(PARAM_AREA, true)) {
-            String area = request->getParam(PARAM_AREA, true)->value();
-            strncpy(priceArea, area.c_str(), sizeof(priceArea) - 1);
-            priceArea[sizeof(priceArea) - 1] = '\0';  // Ensure null-termination
-            
-            saveChar("priceArea", priceArea);
-        }
-
-        if (request->hasParam(PARAM_THRESHOLD, true)) {
-            threshold = request->getParam(PARAM_THRESHOLD, true)->value().toFloat();
-            saveFloat("threshold", threshold);
-        }
-        if (request->hasParam(PARAM_TAX, true)) {
-            addTax = request->getParam(PARAM_TAX, true);
-            saveBool("addTax", addTax);
-        } else {
-            addTax = false;
-            removeKey("addTax");
-        }
-
-        delay(2000); 
-        ESP.restart();
+         saveConfig(request); 
     });
+    server.on("/toggleDisplay", HTTP_GET, [](AsyncWebServerRequest *request) {
+        toogleDisplay();
+    });
+
+
 
     ElegantOTA.begin(&server);
     ElegantOTA.setAuth("root", "billigel");
     server.begin(); 
     ElegantOTA.onStart(displayUpdateMessage);
+}
+
+void saveConfig(AsyncWebServerRequest *request)
+{
+    if (request->hasParam(PARAM_AREA, true))    {
+        String area = request->getParam(PARAM_AREA, true)->value();
+        strncpy(priceArea, area.c_str(), sizeof(priceArea) - 1);
+        priceArea[sizeof(priceArea) - 1] = '\0'; // Ensure null-termination
+
+        saveChar("priceArea", priceArea);
+    }
+
+    if (request->hasParam(PARAM_THRESHOLD, true)) {
+        threshold = request->getParam(PARAM_THRESHOLD, true)->value().toFloat();
+        saveFloat("threshold", threshold);
+    }
+    if (request->hasParam(PARAM_TAX, true)) {
+        addTax = request->getParam(PARAM_TAX, true);
+        saveBool("addTax", addTax);
+    }
+    else {
+        addTax = false;
+        removeKey("addTax");
+    }
+    delay(2000);
+    ESP.restart();
 }
 
 void handleWifiStatusMessage(WiFiManager *myWiFiManager) {
@@ -78,6 +88,5 @@ String generateHTML(){
     html.replace("{{area == 'SE3' ? 'selected' : ''}}", String(priceArea) == "SE3" ? "selected" : "");
     html.replace("{{area == 'SE4' ? 'selected' : ''}}", String(priceArea) == "SE4" ? "selected" : "");
     html.replace("{{threshold}}", String(threshold));
-    html.replace("{{tax}}", loadBool("addTax", addTax) ? "checked" : "");
     return html;
 }

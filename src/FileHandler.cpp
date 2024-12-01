@@ -49,13 +49,15 @@ bool loadBool(const char* key, bool& value) {
     }
 }
 
-void removeKey(const char* key) {
+void removeBool(){
+  void removeKey(const char* key) {
     if (preferences.isKey(key)) {
         preferences.remove(key);
         Serial.printf("Key '%s' removed from Preferences.\n", key);
     } else {
         Serial.printf("Key '%s' does not exist in Preferences.\n", key);
     }
+}
 }
 
 String loadHTML() {
@@ -71,8 +73,6 @@ bool checkValues(bool addTax, char* priceArea, float threshold){
     if (!loadFloat("threshold", threshold) || threshold <= 0.0) {
         return false; 
     }
-
-
 
     return true;
 }

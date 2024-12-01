@@ -69,3 +69,10 @@ void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uin
 
     tft.drawString(message, xCenter, yCenter);
 }
+
+
+void toogleDisplay(){
+    int currentState = digitalRead(10);
+    digitalWrite(10, !currentState);
+}
+
