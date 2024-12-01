@@ -15,12 +15,8 @@ void initNetwork() {
     wifiManager.autoConnect("Eldisplay");
 
     delay(2000);
-    if (!MDNS.begin("eldisplay")) 
-   {             
-     Serial.println("Error starting mDNS");
-   }
-   WiFi.setHostname("eldisplay");
-   clearDisplay();
+    WiFi.setHostname("eldisplay");
+    clearDisplay();
 }
 
 void setupWebServer(AsyncWebServer &server) {
@@ -82,6 +78,6 @@ String generateHTML(){
     html.replace("{{area == 'SE3' ? 'selected' : ''}}", String(priceArea) == "SE3" ? "selected" : "");
     html.replace("{{area == 'SE4' ? 'selected' : ''}}", String(priceArea) == "SE4" ? "selected" : "");
     html.replace("{{threshold}}", String(threshold));
-    html.replace("{{tax}}", addTax ? "checked" : "");
+    html.replace("{{tax}}", loadBool("addTax", addTax) ? "checked" : "");
     return html;
 }
