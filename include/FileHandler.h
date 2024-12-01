@@ -12,7 +12,7 @@ void saveBool(const char* filename, bool value);
 char* loadChar(const char* filename, char* buffer, size_t len);
 float loadFloat(const char* filename, float& value);
 bool loadBool(const char* filename, bool& value);
-
+void removeKey(const char* key);
 String loadHTML();
 
 bool initializePreferences();

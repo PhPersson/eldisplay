@@ -107,36 +107,13 @@ const char index_html[] = R"rawliteral(
     <input type="number" id="threshold" name="threshold" step="0.01" value="{{threshold}}" placeholder="Ange när elpriset ska räknas som högt">
 
     <label for="tax">
-        <input type="checkbox" id="tax" name="tax" {{tax}} onchange="toggleExtraFee()"> Räkna extra avgifter? (25% skatt + 0.53.5/ kWh)
+        <input type="checkbox" id="tax" name="tax" {{tax}}"> Räkna extra avgifter? (25% skatt + 0.53.5/ kWh)
     </label>
-
-    <!-- Extra fee field -->
-    <div id="extraFeeContainer" style="display: none;">
-        <label for="extraFee">Elöverföringsavgift:</label>
-        <input type="number" id="extraFee" name="extraFee" step="0.01" value="{{extraFee}}" placeholder="Ange elöverföringsavgift">
-    </div>
 
     <input type="submit" value="Spara">
     <button type="button" onclick="location.href='/update'">Uppdatera</button>
 </form>
 
-<script>
-    // JavaScript to toggle visibility of the extra fee field
-    function toggleExtraFee() {
-        const taxCheckbox = document.getElementById('tax');
-        const extraFeeContainer = document.getElementById('extraFeeContainer');
-        if (taxCheckbox.checked) {
-            extraFeeContainer.style.display = 'block';
-        } else {
-            extraFeeContainer.style.display = 'none';
-        }
-    }
-
-    // Ensure the correct visibility on page load
-    window.onload = function () {
-        toggleExtraFee();
-    };
-</script>
 
 
 </body>
@@ -144,4 +121,4 @@ const char index_html[] = R"rawliteral(
 
 )rawliteral";
 
-#endif // INDEX_HTML_H
+#endif

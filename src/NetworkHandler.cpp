@@ -25,17 +25,9 @@ void initNetwork() {
 
 void setupWebServer(AsyncWebServer &server) {
 
+
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-
-        String html = index_html;
-        html.replace("{{area == 'SE1' ? 'selected' : ''}}", String(priceArea) == "SE1" ? "selected" : "");
-        html.replace("{{area == 'SE2' ? 'selected' : ''}}", String(priceArea) == "SE2" ? "selected" : "");
-        html.replace("{{area == 'SE3' ? 'selected' : ''}}", String(priceArea) == "SE3" ? "selected" : "");
-        html.replace("{{area == 'SE4' ? 'selected' : ''}}", String(priceArea) == "SE4" ? "selected" : "");
-        html.replace("{{threshold}}", String(threshold));
-
-        html.replace("{{tax}}", addTax ? "checked" : "");
-        request->send(200, "text/html", html);
+        request->send(200, "text/html", generateHTML());
     });
 
     server.onNotFound([](AsyncWebServerRequest *request) {
@@ -46,7 +38,6 @@ void setupWebServer(AsyncWebServer &server) {
 
         if (request->hasParam(PARAM_AREA, true)) {
             String area = request->getParam(PARAM_AREA, true)->value();
-            Serial.println(area);
             strncpy(priceArea, area.c_str(), sizeof(priceArea) - 1);
             priceArea[sizeof(priceArea) - 1] = '\0';  // Ensure null-termination
             
@@ -56,13 +47,16 @@ void setupWebServer(AsyncWebServer &server) {
         if (request->hasParam(PARAM_THRESHOLD, true)) {
             threshold = request->getParam(PARAM_THRESHOLD, true)->value().toFloat();
             saveFloat("threshold", threshold);
-            Serial.println(threshold);
+        }
+        if (request->hasParam(PARAM_TAX, true)) {
+            addTax = request->getParam(PARAM_TAX, true);
+            saveBool("addTax", addTax);
+        } else {
+            addTax = false;
+            removeKey("addTax");
         }
 
-        addTax = request->hasParam(PARAM_TAX, true); 
-        saveBool("addTax", addTax);
-        
-        delay(200); 
+        delay(2000); 
         ESP.restart();
     });
 
@@ -80,3 +74,14 @@ void loopOTA(){
     ElegantOTA.loop();
 }
 
+String generateHTML(){
+
+    String html = index_html;
+    html.replace("{{area == 'SE1' ? 'selected' : ''}}", String(priceArea) == "SE1" ? "selected" : "");
+    html.replace("{{area == 'SE2' ? 'selected' : ''}}", String(priceArea) == "SE2" ? "selected" : "");
+    html.replace("{{area == 'SE3' ? 'selected' : ''}}", String(priceArea) == "SE3" ? "selected" : "");
+    html.replace("{{area == 'SE4' ? 'selected' : ''}}", String(priceArea) == "SE4" ? "selected" : "");
+    html.replace("{{threshold}}", String(threshold));
+    html.replace("{{tax}}", addTax ? "checked" : "");
+    return html;
+}
