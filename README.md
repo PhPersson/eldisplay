@@ -5,10 +5,6 @@
 
 <h4 align="center">Eldisplay är en liten display som drivs av en mikrokontroller och visar de aktuella elpriserna i Sverige.</h4>
 
-_README in [English](README-en.md)_
-
-
-
 ## Vad är Eldisplay?
 
 Eldisplay föddes ur en enkel insikt: det kändes onödigt att behöva plocka upp mobiltelefonen för att kolla elpriser innan man använde apparater som tvättmaskiner eller diskmaskiner. Jag insåg att det borde finnas ett enklare sätt att hålla koll på priserna.
@@ -38,3 +34,6 @@ Funktioner i Eldisplay:
    - Följ anvisningarna och anslut eldisplay till WiFi.
    - När du är ansluten till WiFi, gå till __eldisplay.local__ i valfri webbläsare för att konfigurera enheten.
    - Webbgränsnittet låter dig att ändra ditt _elprisområde, när elpriset skall anses som högt, om 25% moms_ skall räknas in i priset som visas
+
+
+_README in [English](README-en.md)_
