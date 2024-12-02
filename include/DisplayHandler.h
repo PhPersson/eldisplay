@@ -1,6 +1,5 @@
-#include <Adafruit_ILI9341.h>
+#include <TFT_eSPI.h>
 
-extern Adafruit_ILI9341 tft;
 
 void initDisplay();
 
@@ -14,10 +13,14 @@ void displayMDNS();
 
 void displayNoValuesMessage();
 
-void displayMessageCenter(String message);
-
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
 
 void displayDeviceText();
 
-void displayJsonError(const String& error);
+void clearDisplay();
+
+void displayUpdateMessage();
+
+void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uint16_t textColor, uint16_t bgColor);
+
+void toogleDisplay();
