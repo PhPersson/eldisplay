@@ -49,16 +49,13 @@ bool loadBool(const char* key, bool& value) {
     }
 }
 
-void removeBool(){
-  void removeKey(const char* key) {
-    if (preferences.isKey(key)) {
-        preferences.remove(key);
-        Serial.printf("Key '%s' removed from Preferences.\n", key);
-    } else {
-        Serial.printf("Key '%s' does not exist in Preferences.\n", key);
-    }
+
+void removeKey(const char* key) {
+  if (preferences.isKey(key)) {
+      preferences.remove(key);
+  }
 }
-}
+
 
 String loadHTML() {
     return preferences.getString("index_html", "");
