@@ -4,10 +4,6 @@
 </h1>
 
 <h4 align="center">Eldisplay är en liten display som drivs av en mikrokontroller och visar de aktuella elpriserna i Sverige.</h4>
-<p align="center">
-  <a href="#vad-ar-eldisplay">Vad är Eldisplay?</a>
-  <a href="#hur-man-installera">Hur man installerar</a>
-</p>
 
 _README in [English](README-en.md)_
 
