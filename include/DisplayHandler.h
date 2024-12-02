@@ -11,7 +11,7 @@ void displayHttpErrorMessage(int httpCode);
 
 void displayMDNS();
 
-void displayNoValuesMessage();
+void displaySetupMessage();
 
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
 

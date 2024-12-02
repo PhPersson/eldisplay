@@ -27,8 +27,9 @@ void setup() {
 
   Serial.println("Data från: elprisetjustnu.se");
   delay(500);
+
   if(!checkValues(addTax,priceArea,threshold)){
-    displayNoValuesMessage(); 
+    displaySetupMessage(); 
     return;
   } else{
     getElectricityPrices();
