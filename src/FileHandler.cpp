@@ -12,7 +12,6 @@ bool initializePreferences() {
 
 void saveChar(const char* key, const char* value) {
   preferences.putString(key, value);
-  Serial.printf("Saved %s with result: %d\n", key);
 }
 
 
@@ -40,11 +39,23 @@ float loadFloat(const char* key, float& value) {
   return value;
 }
 
-// Load bool from Preferences
 bool loadBool(const char* key, bool& value) {
-  value = preferences.getBool(key, true);
-  return true;
+    if (preferences.isKey(key)) {
+        value = preferences.getBool(key);
+        return true;
+    } else {
+        value = false; 
+        return false;
+    }
 }
+
+
+void removeKey(const char* key) {
+  if (preferences.isKey(key)) {
+      preferences.remove(key);
+  }
+}
+
 
 String loadHTML() {
     return preferences.getString("index_html", "");
@@ -52,20 +63,12 @@ String loadHTML() {
 
 bool checkValues(bool addTax, char* priceArea, float threshold){
 
-
-    Serial.println(loadChar("priceArea", priceArea, sizeof(priceArea)) || priceArea[0] == '\0');
-    Serial.println(loadFloat("threshold", threshold) || threshold <= 0.0);
-    Serial.println(loadBool("addTax", addTax));
     if (!loadChar("priceArea", priceArea, sizeof(priceArea)) || priceArea[0] == '\0') {
       return false;
     }
 
     if (!loadFloat("threshold", threshold) || threshold <= 0.0) {
         return false; 
-    }
-
-    if (!loadBool("addTax", addTax)) {
-        return false;
     }
 
     return true;

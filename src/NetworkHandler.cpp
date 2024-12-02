@@ -1,5 +1,6 @@
 #include "NetworkHandler.h"
 #include "DisplayHandler.h"
+#include "index_html.h"
 
 AsyncWebServer server(80);
 WiFiManager wifiManager;
@@ -7,17 +8,7 @@ WiFiManager wifiManager;
 const char* PARAM_AREA = "area";
 const char* PARAM_THRESHOLD = "threshold";
 const char* PARAM_TAX = "tax";
-
-#define index_html_gz_len 1039
-
-const uint8_t index_html[1039] PROGMEM = { 31,139,8,0,0,0,0,0,2,3,178,81,116,241,119,14,137,12,112,85,200,40,201,205,177,227,229,2,244,94,29,72,174,155,96,248,42,255,144,178,101,86,238,222,231,231,88,78,239,189,247,130,4,150,136,17,40,128,92,226,241,109,54,87,200,5,246,98,65,66,222,194,74,25,77,123,110,162,252,124,124,127,5,47,202,39,112,44,146,16,233,13,170,70,40,38,246,9,246,181,200,168,193,16,167,88,105,106,66,244,237,55,239,5,51,116,154,51,204,112,186,252,80,104,115,123,195,185,96,34,193,10,2,120,151,19,166,115,142,247,139,190,147,120,8,37,112,70,67,180,97,116,155,75,101,16,196,82,24,42,44,244,150,17,147,134,132,110,88,76,131,170,115,5,76,48,195,48,15,116,140,57,13,135,189,193,221,214,218,236,29,112,253,138,36,217,195,161,238,215,175,149,133,14,86,56,99,124,63,135,55,149,5,186,2,141,133,14,52,85,108,245,218,99,225,8,199,235,68,201,66,144,32,150,92,170,57,188,180,154,216,247,115,79,46,195,42,97,98,14,3,111,60,199,132,88,3,204,97,52,200,119,15,230,142,247,205,149,84,153,207,177,105,219,213,170,35,182,83,92,17,170,2,133,9,43,244,28,134,77,18,187,64,167,152,200,173,101,13,163,
-124,7,83,251,85,73,132,207,7,87,80,127,122,195,139,39,138,238,156,27,230,48,25,88,212,22,59,224,194,200,102,117,211,161,175,172,161,59,19,96,206,18,187,46,166,194,80,229,129,158,76,48,30,143,155,49,57,142,40,247,97,235,104,155,67,196,101,188,110,228,25,68,210,24,153,53,217,199,133,201,150,178,36,53,22,66,114,210,66,106,58,157,54,147,210,148,211,216,92,221,15,48,145,23,230,103,179,207,105,120,86,234,124,246,107,203,164,40,178,136,170,214,105,93,68,25,123,188,58,42,172,30,194,183,64,237,167,225,96,240,74,91,232,248,138,251,166,233,18,92,211,22,1,139,110,35,74,75,206,8,188,20,199,113,83,0,178,191,43,26,53,98,36,27,189,96,165,168,5,187,246,50,168,209,56,113,74,227,181,197,57,251,21,14,141,122,41,231,81,79,241,227,255,155,186,67,126,142,102,248,217,100,218,28,36,219,148,25,218,98,35,33,133,63,21,23,74,151,203,114,201,92,54,116,165,57,79,229,134,170,
-46,100,135,179,217,120,230,1,183,199,82,51,200,240,25,30,69,179,23,167,177,35,214,89,199,225,120,54,121,126,253,24,234,190,211,191,132,79,101,196,56,133,242,204,96,34,129,203,254,253,236,27,25,37,12,195,249,131,106,119,93,86,187,11,127,95,255,128,233,146,96,181,74,237,245,223,135,152,182,65,180,215,84,63,119,122,35,154,53,99,52,151,171,46,37,171,67,217,234,80,186,252,144,107,215,193,211,192,179,210,172,201,72,94,115,209,63,93,16,22,253,250,54,179,40,61,104,159,182,149,14,189,75,139,21,26,186,169,202,71,56,54,76,138,16,245,99,41,86,44,65,144,81,147,74,18,162,47,62,255,250,155,187,43,136,59,139,236,130,16,97,69,49,90,190,203,115,197,180,204,212,237,63,132,206,23,253,74,224,36,237,172,14,140,212,210,245,69,200,181,21,253,171,96,138,146,90,184,90,32,243,146,4,108,48,47,172,28,90,126,103,233,254,9,212,24,168,119,88,244,157,72,251,162,175,223,29,34,56,28,
-202,61,32,12,225,204,246,207,224,117,56,115,92,40,57,131,57,156,157,29,143,75,59,209,5,109,228,161,141,218,208,70,93,208,198,30,218,184,13,109,220,5,109,226,161,77,218,208,38,30,218,162,239,132,108,247,169,99,77,170,168,78,37,39,104,249,193,237,191,137,1,90,249,216,119,110,21,249,80,69,62,114,201,129,128,145,135,203,157,187,31,14,104,67,243,16,13,122,131,33,58,105,113,56,220,205,31,143,8,114,142,99,90,118,168,101,242,166,72,40,136,219,27,85,83,160,6,244,26,131,186,189,89,11,172,65,203,12,210,146,33,106,214,3,239,78,113,251,132,240,233,32,173,41,227,157,35,91,55,15,7,251,176,134,131,175,170,157,128,9,200,100,166,95,135,243,209,244,149,11,7,121,111,141,6,123,184,74,128,238,60,149,99,133,239,114,200,213,131,90,210,117,16,72,17,115,22,175,67,196,101,140,75,79,245,172,85,86,225,89,191,200,9,54,244,12,45,191,205,171,150,194,139,190,91,84,37,122,153,187,
-46,139,251,46,215,109,163,254,147,243,31,31,60,139,234,246,12,0,0
-};  
-
-
+bool isScreenOn = false;    
 
 void initNetwork() {
     wifiManager.setConnectTimeout(120);
@@ -25,20 +16,15 @@ void initNetwork() {
     wifiManager.autoConnect("Eldisplay");
 
     delay(2000);
-    if (!MDNS.begin("eldisplay")) 
-   {             
-     Serial.println("Error starting mDNS");
-   }
-   WiFi.setHostname("eldisplay");
-   clearDisplay();
+    WiFi.setHostname("eldisplay");
+    clearDisplay();
 }
 
 void setupWebServer(AsyncWebServer &server) {
 
+
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-        AsyncWebServerResponse* response = request->beginResponse_P(200, "text/html", index_html, index_html_gz_len);
-        response->addHeader("Content-Encoding", "gzip");
-        request->send(response);
+        request->send(200, "text/html", generateHTML());
     });
 
     server.onNotFound([](AsyncWebServerRequest *request) {
@@ -46,33 +32,44 @@ void setupWebServer(AsyncWebServer &server) {
     });
 
     server.on("/config", HTTP_POST, [](AsyncWebServerRequest *request) {
-
-        if (request->hasParam(PARAM_AREA, true)) {
-            String area = request->getParam(PARAM_AREA, true)->value();
-            Serial.println(area);
-            strncpy(priceArea, area.c_str(), sizeof(priceArea) - 1);
-            priceArea[sizeof(priceArea) - 1] = '\0';  // Ensure null-termination
-            
-            saveChar("priceArea", priceArea);
-        }
-
-        if (request->hasParam(PARAM_THRESHOLD, true)) {
-            threshold = request->getParam(PARAM_THRESHOLD, true)->value().toFloat();
-            saveFloat("threshold", threshold);
-            Serial.println(threshold);
-        }
-
-        addTax = request->hasParam(PARAM_TAX, true); 
-        saveBool("addTax", addTax);
-        
-        delay(200); 
-        ESP.restart();
+         saveConfig(request); 
     });
+    server.on("/toggleDisplay", HTTP_GET, [](AsyncWebServerRequest *request) {
+        toogleDisplay();
+    });
+
+
 
     ElegantOTA.begin(&server);
     ElegantOTA.setAuth("root", "billigel");
     server.begin(); 
     ElegantOTA.onStart(displayUpdateMessage);
+}
+
+void saveConfig(AsyncWebServerRequest *request)
+{
+    if (request->hasParam(PARAM_AREA, true))    {
+        String area = request->getParam(PARAM_AREA, true)->value();
+        strncpy(priceArea, area.c_str(), sizeof(priceArea) - 1);
+        priceArea[sizeof(priceArea) - 1] = '\0'; // Ensure null-termination
+
+        saveChar("priceArea", priceArea);
+    }
+
+    if (request->hasParam(PARAM_THRESHOLD, true)) {
+        threshold = request->getParam(PARAM_THRESHOLD, true)->value().toFloat();
+        saveFloat("threshold", threshold);
+    }
+    if (request->hasParam(PARAM_TAX, true)) {
+        addTax = request->getParam(PARAM_TAX, true);
+        saveBool("addTax", addTax);
+    }
+    else {
+        addTax = false;
+        removeKey("addTax");
+    }
+    delay(2000);
+    ESP.restart();
 }
 
 void handleWifiStatusMessage(WiFiManager *myWiFiManager) {
@@ -81,4 +78,15 @@ void handleWifiStatusMessage(WiFiManager *myWiFiManager) {
 
 void loopOTA(){
     ElegantOTA.loop();
+}
+
+String generateHTML(){
+
+    String html = index_html;
+    html.replace("{{area == 'SE1' ? 'selected' : ''}}", String(priceArea) == "SE1" ? "selected" : "");
+    html.replace("{{area == 'SE2' ? 'selected' : ''}}", String(priceArea) == "SE2" ? "selected" : "");
+    html.replace("{{area == 'SE3' ? 'selected' : ''}}", String(priceArea) == "SE3" ? "selected" : "");
+    html.replace("{{area == 'SE4' ? 'selected' : ''}}", String(priceArea) == "SE4" ? "selected" : "");
+    html.replace("{{threshold}}", String(threshold));
+    return html;
 }
