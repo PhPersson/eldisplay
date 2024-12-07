@@ -27,7 +27,7 @@ void displayHttpErrorMessage(int httpCode) {
 void displayMDNS() {
     tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
     tft.setTextSize(1);
-    tft.drawString("eldisplay.local", (tft.width() - 120) / 2, tft.height() - 20);
+    tft.drawString("eldisplay.local", (tft.width() - 120) / 2 + 20, tft.height() - 20);
 }
 
 void displayNoValuesMessage() {
@@ -38,7 +38,7 @@ void displayNoValuesMessage() {
 
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor) {
     tft.setTextColor(textColor);
-    int yPos = 80 + (hoursDisplayed * 50); 
+    int yPos = 80 + (hoursDisplayed * 50 + 10); 
     String message = String(startOfHour) + ": SEK: " + String(totalSekPerKwh, 2);
     tft.drawString(message, (tft.width() - message.length() * 12) / 2, yPos);
 }
@@ -61,7 +61,6 @@ void displayUpdateMessage() {
 
 
 void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uint16_t textColor, uint16_t bgColor) {
-
     tft.setTextColor(textColor, bgColor);
 
     int16_t xCenter = (tft.width() - tft.textWidth(message)) / 2;
@@ -71,7 +70,7 @@ void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uin
 }
 
 
-void toogleDisplay(){
+void toggleDisplay(){
     int currentState = digitalRead(10);
     digitalWrite(10, !currentState);
 }

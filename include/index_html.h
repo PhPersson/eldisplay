@@ -112,11 +112,16 @@ const char index_html[] = R"rawliteral(
 
     <input type="submit" value="Spara">
     <button type="button" onclick="location.href='/update'">Uppdatera</button>
+    <button type="button" id="toggleDisplayBtn">Skärm av/på</button>
 </form>
-
-
-
 </body>
+
+<script>
+    document.getElementById('toggleDisplayBtn').addEventListener('click', function() {
+        fetch('/toggleDisplay', { method: 'POST' })
+    });
+</script>
+
 </html>
 
 )rawliteral";
