@@ -27,7 +27,8 @@ void displayHttpErrorMessage(int httpCode) {
 void displayMDNS() {
     tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
     tft.setTextSize(1);
-    tft.drawString("eldisplay.local", (tft.width() - 120) / 2, tft.height() - 20);
+    // drawCenteredText(tft,"eldisplay.local",tft.height() - 20, TFT_LIGHTGREY, TFT_BLACK);
+    tft.drawString("eldisplay.local", (tft.width() - 120) / 2 + 20, tft.height() - 20);
 }
 
 void displayNoValuesMessage() {
@@ -61,7 +62,6 @@ void displayUpdateMessage() {
 
 
 void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uint16_t textColor, uint16_t bgColor) {
-
     tft.setTextColor(textColor, bgColor);
 
     int16_t xCenter = (tft.width() - tft.textWidth(message)) / 2;
