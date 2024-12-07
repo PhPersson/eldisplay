@@ -8,7 +8,7 @@ void initDisplay() {
     #ifdef DISPLAY_VERTICAL
         tft.setRotation(0);
     #else
-        tft.setRotation(1);
+        tft.setRotation(3);
     #endif
     pinMode(10, OUTPUT);
     digitalWrite(10, HIGH);
