@@ -34,11 +34,10 @@ void setupWebServer(AsyncWebServer &server) {
     server.on("/config", HTTP_POST, [](AsyncWebServerRequest *request) {
          saveConfig(request); 
     });
-    server.on("/toggleDisplay", HTTP_GET, [](AsyncWebServerRequest *request) {
-        toogleDisplay();
+    server.on("/toggleDisplay", HTTP_POST, [](AsyncWebServerRequest *request) {
+        toggleDisplay();
+        request->send(200, "text/plain", "Display toggled");
     });
-
-
 
     ElegantOTA.begin(&server);
     ElegantOTA.setAuth("root", "billigel");
@@ -81,7 +80,6 @@ void loopOTA(){
 }
 
 String generateHTML(){
-
     String html = index_html;
     html.replace("{{area == 'SE1' ? 'selected' : ''}}", String(priceArea) == "SE1" ? "selected" : "");
     html.replace("{{area == 'SE2' ? 'selected' : ''}}", String(priceArea) == "SE2" ? "selected" : "");

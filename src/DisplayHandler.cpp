@@ -71,7 +71,7 @@ void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uin
 }
 
 
-void toogleDisplay(){
+void toggleDisplay(){
     int currentState = digitalRead(10);
     digitalWrite(10, !currentState);
 }
