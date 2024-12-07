@@ -27,7 +27,6 @@ void displayHttpErrorMessage(int httpCode) {
 void displayMDNS() {
     tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
     tft.setTextSize(1);
-    // drawCenteredText(tft,"eldisplay.local",tft.height() - 20, TFT_LIGHTGREY, TFT_BLACK);
     tft.drawString("eldisplay.local", (tft.width() - 120) / 2 + 20, tft.height() - 20);
 }
 
@@ -39,7 +38,7 @@ void displayNoValuesMessage() {
 
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor) {
     tft.setTextColor(textColor);
-    int yPos = 80 + (hoursDisplayed * 50); 
+    int yPos = 80 + (hoursDisplayed * 50 + 10); 
     String message = String(startOfHour) + ": SEK: " + String(totalSekPerKwh, 2);
     tft.drawString(message, (tft.width() - message.length() * 12) / 2, yPos);
 }
