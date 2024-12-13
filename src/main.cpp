@@ -14,7 +14,6 @@ bool apiFetchedThisHour = false;
 void setup() {
   Serial.begin(115200);
   Serial.setDebugOutput(true);
-  disableLED();
   initDisplay();
   delay(500);
   initNetwork();

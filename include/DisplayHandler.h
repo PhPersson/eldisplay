@@ -3,8 +3,6 @@
 
 void initDisplay();
 
-void displayConnectedMessage();
-
 void displayConnectionFailedMessage();
 
 void displayHttpErrorMessage(int httpCode);
@@ -23,4 +21,4 @@ void displayUpdateMessage();
 
 void drawCenteredText(TFT_eSPI &tft, const String &message, int16_t yOffset, uint16_t textColor, uint16_t bgColor);
 
-void toogleDisplay();
+void toggleDisplay();
