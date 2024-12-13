@@ -37,7 +37,7 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-  if (currentMillis - lastMillis >= 60000) {
+  if (currentMillis - lastMillis >= 300000) {
     lastMillis = currentMillis;
 
     timeClient.update();
