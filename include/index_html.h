@@ -164,7 +164,7 @@ const char index_html[] = R"rawliteral(
 
     <div class="tooltip">
         <label for="tax">
-            <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in extra avgifter?
+            <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in extra avgifter
         </label>
         <span class="tooltiptext">Aktivera om du vill räkna med 25% skatt + 0.53.5 öre/kWh (energiskatt)</span>
     </div>

@@ -117,3 +117,10 @@ void toggleDisplay(){
     digitalWrite(21, !currentState);
 }
 
+
+void turnOnDisplay(){
+    digitalWrite(21, HIGH);
+}
+void turnOffDisplay(){
+    digitalWrite(21, LOW);
+}

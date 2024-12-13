@@ -67,6 +67,16 @@ void saveConfig(AsyncWebServerRequest *request)
         addTax = false;
         removeKey("addTax");
     }
+    if (request->hasParam("nightMode", true)) {
+        String nightModeValue = request->getParam("nightMode", true)->value();
+        nightMode = (nightModeValue.equals("on")) ? true : false;
+        saveBool("nightMode", nightMode);
+    } else {
+        nightMode = false;
+        removeKey("nightMode");
+    }
+
+
     delay(2000);
     ESP.restart();
 }
