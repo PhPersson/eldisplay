@@ -16,5 +16,5 @@ void removeKey(const char* key);
 String loadHTML();
 
 bool initializePreferences();
-bool checkValues(bool addTax, char* priceArea, float threshold);
+bool checkValues(char* priceArea, float threshold,bool nightMode);
 #endif

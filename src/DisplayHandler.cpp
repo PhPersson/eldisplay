@@ -30,7 +30,7 @@ void displayMDNS() {
     tft.drawString("eldisplay.local", (tft.width() - 120) / 2 + 20, tft.height() - 20);
 }
 
-void displayNoValuesMessage() {
+void displaySetupMessage() {
     drawCenteredText(tft, "Setup device at", -20, TFT_WHITE, TFT_BLACK);
     drawCenteredText(tft, "eldisplay.local", 20, TFT_YELLOW, TFT_BLACK);
 }
@@ -75,3 +75,10 @@ void toggleDisplay(){
     digitalWrite(10, !currentState);
 }
 
+void turnOnDisplay(){
+    digitalWrite(10, HIGH);
+}
+
+void turnOffDisplay(){
+    digitalWrite(10, LOW);
+}
