@@ -26,7 +26,7 @@ void getElectricityPrices() {
             int startOfHour = timeStart.substring(11, 13).toInt();
 
             if (startOfHour == currentHour || startOfHour == (currentHour + 1) % 24 || startOfHour == (currentHour + 2) % 24) {
-
+            
                 float sekPerKwh = obj["SEK_per_kWh"];
                 float totalSekPerKwh = sekPerKwh;
 
