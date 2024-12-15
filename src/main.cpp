@@ -57,7 +57,7 @@ void loop() {
 
     if (nightMode) {
       int currentHour = timeClient.getHours();
-      if (currentHour >= 22 || currentHour < 6) {
+      if (currentHour >= 23 || currentHour < 6) {
         turnOffDisplay();
       } else {
         turnOnDisplay();
