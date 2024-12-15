@@ -42,9 +42,8 @@ float loadFloat(const char* key, float& value) {
 bool loadBool(const char* key, bool& value) {
     if (preferences.isKey(key)) {
         value = preferences.getBool(key);
-        return true;
+        return value;
     } else {
-        value = false; 
         return false;
     }
 }
@@ -61,7 +60,7 @@ String loadHTML() {
     return preferences.getString("index_html", "");
 }
 
-bool checkValues(bool addTax, char* priceArea, float threshold){
+bool checkValues(char* priceArea, float threshold, bool nightMode){
 
     if (!loadChar("priceArea", priceArea, sizeof(priceArea)) || priceArea[0] == '\0') {
       return false;
@@ -71,5 +70,6 @@ bool checkValues(bool addTax, char* priceArea, float threshold){
         return false; 
     }
 
+    nightMode = loadBool("nightMode", nightMode);
     return true;
 }
