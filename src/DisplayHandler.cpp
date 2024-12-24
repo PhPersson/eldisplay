@@ -27,7 +27,7 @@ void displayHttpErrorMessage(int httpCode) {
 void displayMDNS(IPAddress IP) {
     tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
     tft.setTextSize(1);
-    tft.drawString(IP.toString() + "or", (tft.width() - 120) / 2 + 20, tft.height() - 30);
+    tft.drawString(IP.toString() + " or", (tft.width() - 120) / 2 + 20, tft.height() - 30);
     tft.drawString("eldisplay.local", (tft.width() - 120) / 2 + 20, tft.height() - 20);
 }
 
