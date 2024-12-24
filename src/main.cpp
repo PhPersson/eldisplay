@@ -49,6 +49,7 @@ void loop() {
 
     if (currentMinute == 5 && !apiFetchedThisHour && !nightMode) {
       getElectricityPrices();
+      displayMDNS(getIP());
       apiFetchedThisHour = true;
     }
 
