@@ -13,6 +13,7 @@ void getElectricityPrices() {
     int httpCode = http.GET();
 
     if (httpCode > 0) {
+        clearDisplay();
         String payload = http.getString();
         JsonDocument json;
         DeserializationError error = deserializeJson(json, payload);
@@ -57,5 +58,4 @@ void getElectricityPrices() {
     }
 
     http.end();
-    displayMDNS();
 }

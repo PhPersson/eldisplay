@@ -7,9 +7,9 @@ void displayConnectionFailedMessage();
 
 void displayHttpErrorMessage(int httpCode);
 
-void displayMDNS();
+void displayMDNS(IPAddress IP);
 
-void displaySetupMessage();
+void displaySetupMessage(IPAddress IP);
 
 void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
 

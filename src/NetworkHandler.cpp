@@ -40,7 +40,6 @@ void setupWebServer(AsyncWebServer &server) {
     });
 
     ElegantOTA.begin(&server);
-    ElegantOTA.setAuth("root", "billigel");
     server.begin(); 
     ElegantOTA.onStart(displayUpdateMessage);
 }
@@ -98,4 +97,8 @@ String generateHTML(){
     html.replace("{{area == 'SE4' ? 'selected' : ''}}", String(priceArea) == "SE4" ? "selected" : "");
     html.replace("{{threshold}}", String(threshold));
     return html;
+}
+
+IPAddress getIP(){
+    return WiFi.localIP();
 }

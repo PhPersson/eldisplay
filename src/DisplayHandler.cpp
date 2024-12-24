@@ -36,24 +36,27 @@ void displayHttpErrorMessage(int httpCode) {
     #endif
 }
 
-void displayMDNS() {
+void displayMDNS(IPAddress IP) {
     tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
     tft.setTextSize(1);
 
     #ifdef DISPLAY_VERTICAL
         tft.drawString("eldisplay.local", (tft.width() - 120) / 2, tft.height() - 20);
     #elif defined(DISPLAY_HORIZONTAL)
+        tft.drawString(IP.toString() + " or", (tft.width() - 120) / 2 + 20, tft.height() - 50);
         tft.drawString("eldisplay.local", (tft.width() - 80) / 2, tft.height() - 20);
     #endif
 }
 
-void displaySetupMessage() {
+void displaySetupMessage(IPAddress IP) {
     #ifdef DISPLAY_VERTICAL
         drawCenteredText(tft, "Setup device at", -40, TFT_WHITE, TFT_BLACK);
         drawCenteredText(tft, "eldisplay.local", 0, TFT_YELLOW, TFT_BLACK);
     #elif defined(DISPLAY_HORIZONTAL)
         drawCenteredText(tft, "Setup device at", -20, TFT_WHITE, TFT_BLACK);
         drawCenteredText(tft, "eldisplay.local", 20, TFT_YELLOW, TFT_BLACK);
+        drawCenteredText(tft, "or", 40, TFT_YELLOW, TFT_BLACK);
+        drawCenteredText(tft, IP.toString(), 60, TFT_YELLOW, TFT_BLACK);
     #endif
 }
 
