@@ -57,7 +57,5 @@ void getElectricityPrices() {
         delay(10000);
         ESP.restart();
     }
-
     http.end();
-    displayMDNS();
 }

@@ -28,11 +28,12 @@ void setup() {
   Serial.println("Data från: elprisetjustnu.se");
   delay(500);
   if(!checkValues(priceArea,threshold,nightMode)){
-    displaySetupMessage(); 
+    displaySetupMessage(getIP()); 
     return;
   } else{
     getElectricityPrices();
   }
+  displayMDNS(getIP());
 }
 
 
