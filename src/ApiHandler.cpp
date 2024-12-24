@@ -3,6 +3,7 @@
 WiFiClientSecure client;
 
 void getElectricityPrices() {
+
     HTTPClient http;
     char url[100];
     client.setCACert(cert_ISRG_X1);
@@ -13,6 +14,7 @@ void getElectricityPrices() {
     int httpCode = http.GET();
 
     if (httpCode > 0) {
+        clearDisplay();
         String payload = http.getString();
         JsonDocument json;
         DeserializationError error = deserializeJson(json, payload);
