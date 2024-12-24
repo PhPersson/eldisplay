@@ -24,15 +24,18 @@ void displayHttpErrorMessage(int httpCode) {
     drawCenteredText(tft, "HTTP Code: " + String(httpCode), 20, TFT_YELLOW, TFT_BLACK);
 }
 
-void displayMDNS() {
+void displayMDNS(IPAddress IP) {
     tft.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
     tft.setTextSize(1);
+    tft.drawString(IP.toString() + "or", (tft.width() - 120) / 2 + 20, tft.height() - 30);
     tft.drawString("eldisplay.local", (tft.width() - 120) / 2 + 20, tft.height() - 20);
 }
 
-void displaySetupMessage() {
+void displaySetupMessage(IPAddress IP) {
     drawCenteredText(tft, "Setup device at", -20, TFT_WHITE, TFT_BLACK);
     drawCenteredText(tft, "eldisplay.local", 20, TFT_YELLOW, TFT_BLACK);
+    drawCenteredText(tft, "or", 40, TFT_YELLOW, TFT_BLACK);
+    drawCenteredText(tft, IP.toString(), 60, TFT_YELLOW, TFT_BLACK);
 }
 
 

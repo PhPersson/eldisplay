@@ -98,3 +98,7 @@ String generateHTML(){
     html.replace("{{threshold}}", String(threshold));
     return html;
 }
+
+IPAddress getIP(){
+    return WiFi.localIP();
+}

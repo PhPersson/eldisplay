@@ -19,6 +19,6 @@ void handleWifiStatusMessage(WiFiManager *myWiFiManager);
 void loopOTA();
 String generateHTML();
 
-void toggleScreen(AsyncWebServerRequest *request);
+IPAddress getIP();
 
 #endif
