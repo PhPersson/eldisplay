@@ -6,6 +6,8 @@
 <h4 align="center">Eldisplay är en liten display som drivs av en mikrokontroller och visar de aktuella elpriserna i Sverige.</h4>
 
 ## Vad är Eldisplay?
+<p>Elprisererna tillhandahålls av <a href="https://www.elprisetjustnu.se">Elpriset just nu.se</a></p>
+
 
 Eldisplay föddes ur en enkel insikt: det kändes onödigt att behöva plocka upp mobiltelefonen för att kolla elpriser innan man använde apparater som tvättmaskiner eller diskmaskiner. Jag insåg att det borde finnas ett enklare sätt att hålla koll på priserna.
 
