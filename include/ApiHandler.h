@@ -10,4 +10,3 @@
 void getElectricityPrices();
 
 #endif
-

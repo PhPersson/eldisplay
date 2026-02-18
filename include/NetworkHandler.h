@@ -15,7 +15,6 @@ void saveConfig(AsyncWebServerRequest *request);
 void handleWifiStatusMessage(WiFiManager *myWiFiManager);
 void loopOTA();
 String generateHTML();
-
 IPAddress getIP();
 
 #endif
