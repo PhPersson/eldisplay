@@ -1,3 +1,4 @@
+#include "globals.h"
 #include "NetworkHandler.h"
 #include "DisplayHandler.h"
 #include "index_html.h"
@@ -8,7 +9,7 @@ WiFiManager wifiManager;
 const char* PARAM_AREA = "area";
 const char* PARAM_THRESHOLD = "threshold";
 const char* PARAM_TAX = "tax";
-bool isScreenOn = false;    
+
 
 void initNetwork() {
     wifiManager.setConnectTimeout(120);
@@ -21,8 +22,6 @@ void initNetwork() {
 }
 
 void setupWebServer(AsyncWebServer &server) {
-
-
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(200, "text/html", generateHTML());
     });
