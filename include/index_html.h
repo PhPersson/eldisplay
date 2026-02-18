@@ -148,7 +148,21 @@ const char index_html[] = R"rawliteral(
 </head>
 <body>
 
-<h1>Inställningar</h1>
+<h1>Eldisplay</h1>
+
+<div id="currentPrice" style="
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: {{priceColor}}; ">
+    Nu: {{currentPrice}} SEK/kWh
+</div>
 
 <form action="/config" method="POST">
     <label for="area">Elprisområde:</label>
@@ -166,27 +180,24 @@ const char index_html[] = R"rawliteral(
         <label for="tax">
             <input type="checkbox" id="tax" name="tax" {{tax}}> Räkna in extra avgifter
         </label>
-        <span class="tooltiptext">Aktivera om du vill räkna med 25% skatt + 0.53.5 öre/kWh (energiskatt)</span>
+        <span class="tooltiptext">Aktivera om du vill räkna med 25% skatt + 0.45 öre/kWh (energiskatt)</span>
     </div>
 
     <div class="tooltip">
         <label for="nightMode">
             <input type="checkbox" id="nightMode" name="nightMode" {{nightMode}}> Aktivera nattläge
         </label>
-        <span class="tooltiptext">Stänger av skärmen mellan 23:00 och 06:00.</span>
+        <span class="tooltiptext">Stänger av skärmen mellan 23:00 och 06:00</span>
     </div>
 
  <div class="tooltip">
         <label for="tax">
                 <input type="submit" value="Spara">
         </label>
-        <span class="tooltiptext">Sparar och startar om enheten</span>
     </div>
-
 
     <div class="tooltip">
         <button id="updateBtn" type="button" onclick="location.href='/update'">Uppdatera</button>
-        <span class="tooltiptext">Klicka för att uppdatera enheten med ny mjukvara.</span>
     </div>
     
     <button type="button" id="toggleDisplayBtn">Skärm av/på</button>
