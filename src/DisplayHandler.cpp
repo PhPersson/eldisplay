@@ -1,5 +1,4 @@
 #include "DisplayHandler.h"
-#include "user_config.h"
 
 TFT_eSPI tft = TFT_eSPI();
 

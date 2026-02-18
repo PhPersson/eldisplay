@@ -1,9 +1,13 @@
+#include <WiFi.h>
+#include <WiFiClientSecure.h>
+#include "globals.h"
+#include "certs.h"
+#include <HTTPClient.h>
 #include <ApiHandler.h>
-
-WiFiClientSecure client;
+#include <DisplayHandler.h>
+#include <AsyncTCP.h>
 
 void getElectricityPrices() {
-
     HTTPClient http;
     char url[100];
     client.setCACert(cert_ISRG_X1);
@@ -57,5 +61,6 @@ void getElectricityPrices() {
         delay(10000);
         ESP.restart();
     }
+
     http.end();
 }

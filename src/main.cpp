@@ -5,6 +5,7 @@
 #include "TimeHandler.h"
 #include "Utils.h"
 #include "ApiHandler.h"
+#include "globals.h"
 
 extern AsyncWebServer server;
 unsigned long lastMillis = 0;
