@@ -38,10 +38,12 @@ void displaySetupMessage(IPAddress IP) {
 }
 
 
-void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor) {
+void displayEnergyMessage(int startHour, int startMinute, float totalSekPerKwh, int slotsDisplayed, uint16_t textColor) {
     tft.setTextColor(textColor);
-    int yPos = 80 + (hoursDisplayed * 50 + 10); 
-    String message = String(startOfHour) + ": SEK: " + String(totalSekPerKwh, 2);
+    int yPos = 80 + (slotsDisplayed * 50 + 10);
+    char timeStr[6];
+    snprintf(timeStr, sizeof(timeStr), "%02d:%02d", startHour, startMinute);
+    String message = String(timeStr) + " SEK: " + String(totalSekPerKwh, 2);
     tft.drawString(message, (tft.width() - message.length() * 12) / 2, yPos);
 }
 

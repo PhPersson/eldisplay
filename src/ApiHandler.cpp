@@ -7,16 +7,16 @@
 #include <DisplayHandler.h>
 #include <AsyncTCP.h>
 
+
 void getElectricityPrices() {
     HTTPClient http;
     char url[100];
-    client.setCACert(cert_ISRG_X1);
     snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), priceArea);
-    delay(1000);
+    client.setCACert(root_ca);
+    http.begin(client, String(url));
 
-    http.begin(client, url);
     int httpCode = http.GET();
-
+    Serial.println(httpCode);
     if (httpCode > 0) {
         clearDisplay();
         String payload = http.getString();
@@ -26,30 +26,33 @@ void getElectricityPrices() {
 
         JsonArray data = json.as<JsonArray>();
         int currentHour = timeClient.getHours();
-        int hoursDisplayed = 0;
+        int currentMinute = timeClient.getMinutes();
+        int currentQuarter = (currentMinute / 15) * 15;
+        int currentTotalMinutes = currentHour * 60 + currentQuarter;
+        int timeDisplayed = 0;
+
         for (JsonObject obj : data) {
             String timeStart = obj["time_start"].as<String>();
-            int startOfHour = timeStart.substring(11, 13).toInt();
+            int startHour   = timeStart.substring(11, 13).toInt();
+            int startMinute = timeStart.substring(14, 16).toInt();
+            int slotTotalMinutes = startHour * 60 + startMinute;
 
-            if (startOfHour == currentHour || startOfHour == (currentHour + 1) % 24 || startOfHour == (currentHour + 2) % 24) {
+            int diff = slotTotalMinutes - currentTotalMinutes;
+            if (diff >= 0 && diff < 3 * 15) {
 
                 float sekPerKwh = obj["SEK_per_kWh"];
                 float totalSekPerKwh = sekPerKwh;
 
                 if (loadBool("addTax", addTax)) {
                     totalSekPerKwh = sekPerKwh * 1.25 + 0.535;
-                } else {
-                    totalSekPerKwh = sekPerKwh;
                 }
-
-                totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0; 
-
+                totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
                 uint16_t textColor = (totalSekPerKwh > loadFloat("threshold", threshold)) ? TFT_RED : TFT_GREEN;
+                displayEnergyMessage(startHour, startMinute, totalSekPerKwh, timeDisplayed, textColor);
+                float currentPrice = totalSekPerKwh;
+                timeDisplayed++;
 
-                displayEnergyMessage(startOfHour, totalSekPerKwh, hoursDisplayed, textColor);
-                hoursDisplayed++;
-
-                if (hoursDisplayed >= 3) {
+                if (timeDisplayed >= 3) {
                     break;
                 }
             }

@@ -11,7 +11,7 @@ void displayMDNS(IPAddress IP);
 
 void displaySetupMessage(IPAddress IP);
 
-void displayEnergyMessage(int startOfHour, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
+void displayEnergyMessage(int startOfHour, int startMinute, float totalSekPerKwh, int hoursDisplayed, uint16_t textColor);
 
 void displayDeviceText();
 
