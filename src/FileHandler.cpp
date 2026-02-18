@@ -25,7 +25,7 @@ void saveBool(const char* key, bool value) {
 
 
 char* loadChar(const char* key, char* buffer, size_t len) {
-  String value = preferences.getString(key, "");
+  String value = preferences.getString(key,"SE4");
   if (value.length() == 0 || value.length() >= len) {
     return nullptr;
   }
