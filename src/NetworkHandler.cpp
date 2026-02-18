@@ -9,7 +9,8 @@ WiFiManager wifiManager;
 const char* PARAM_AREA = "area";
 const char* PARAM_THRESHOLD = "threshold";
 const char* PARAM_TAX = "tax";
-
+#include <Ticker.h>
+Ticker restartTicker;
 
 void initNetwork() {
     wifiManager.setConnectTimeout(120);
@@ -31,7 +32,28 @@ void setupWebServer(AsyncWebServer &server) {
     });
 
     server.on("/config", HTTP_POST, [](AsyncWebServerRequest *request) {
-         saveConfig(request); 
+            saveConfig(request); 
+            request->send(200, "text/html", R"(
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="refresh" content="10;url=/">
+            </head>
+            <body>
+                <div class="box">
+                    <h2>Inställningar sparade!</h2>
+                    <p>Enheten startar om...</p>
+                </div>
+            </body>
+            </html>
+        )");
+
+    restartTicker.once_ms(500, []() {
+        ESP.restart();
+    });
+
+
     });
     server.on("/toggleDisplay", HTTP_POST, [](AsyncWebServerRequest *request) {
         toggleDisplay();
@@ -74,9 +96,6 @@ void saveConfig(AsyncWebServerRequest *request)
         removeKey("nightMode");
     }
 
-
-    delay(2000);
-    ESP.restart();
 }
 
 void handleWifiStatusMessage(WiFiManager *myWiFiManager) {
@@ -94,6 +113,9 @@ String generateHTML(){
     html.replace("{{area == 'SE3' ? 'selected' : ''}}", String(priceArea) == "SE3" ? "selected" : "");
     html.replace("{{area == 'SE4' ? 'selected' : ''}}", String(priceArea) == "SE4" ? "selected" : "");
     html.replace("{{threshold}}", String(threshold));
+    bool isHigh = currentPrice > loadFloat("threshold", threshold);
+    html.replace("{{currentPrice}}", String(currentPrice, 2));
+    html.replace("{{priceColor}}", isHigh ? "#dc3545" : "#28a745");
     return html;
 }
 

@@ -14,9 +14,7 @@ void getElectricityPrices() {
     snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), priceArea);
     client.setCACert(root_ca);
     http.begin(client, String(url));
-
     int httpCode = http.GET();
-    Serial.println(httpCode);
     if (httpCode > 0) {
         clearDisplay();
         String payload = http.getString();
@@ -47,11 +45,14 @@ void getElectricityPrices() {
                     totalSekPerKwh = sekPerKwh * 1.25 + 0.535;
                 }
                 totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
+
+                if (diff == 0) {
+                    currentPrice = totalSekPerKwh;
+                }
+
                 uint16_t textColor = (totalSekPerKwh > loadFloat("threshold", threshold)) ? TFT_RED : TFT_GREEN;
                 displayEnergyMessage(startHour, startMinute, totalSekPerKwh, timeDisplayed, textColor);
-                float currentPrice = totalSekPerKwh;
                 timeDisplayed++;
-
                 if (timeDisplayed >= 3) {
                     break;
                 }
