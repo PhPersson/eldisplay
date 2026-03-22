@@ -1,6 +1,5 @@
 #include <TFT_eSPI.h>
 
-
 void initDisplay();
 void displayConnectionFailedMessage();
 void displayHttpErrorMessage(int httpCode);

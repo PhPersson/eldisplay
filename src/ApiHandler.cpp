@@ -49,7 +49,6 @@ void getElectricityPrices() {
                 if (diff == 0) {
                     currentPrice = totalSekPerKwh;
                 }
-
                 uint16_t textColor = (totalSekPerKwh > loadFloat("threshold", threshold)) ? TFT_RED : TFT_GREEN;
                 displayEnergyMessage(startHour, startMinute, totalSekPerKwh, timeDisplayed, textColor);
                 timeDisplayed++;

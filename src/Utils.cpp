@@ -1,6 +1,8 @@
 #include <Utils.h>
 
 void disableLED(){
-    pinMode(15, OUTPUT);
-    digitalWrite(15, LOW);
+    pinMode(4, OUTPUT);
+    digitalWrite(4, LOW);
 }
+
+

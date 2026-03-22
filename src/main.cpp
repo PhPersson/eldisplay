@@ -30,7 +30,6 @@ void setup() {
   delay(500);
   if(!checkValues(priceArea,threshold,nightMode)){
     displaySetupMessage(getIP()); 
-    return;
   } else{
     getElectricityPrices();
   }
@@ -41,22 +40,17 @@ void setup() {
 
 void loop() {
   unsigned long currentMillis = millis();
+  int currentMinute = timeClient.getMinutes();
 
-  if (currentMillis - lastMillis >= 60000 ) {
-    lastMillis = currentMillis;
+  if ((currentMinute % 15 == 0) && !apiFetchedThisHour) {
+    getElectricityPrices();
+    displayMDNS(getIP());
+    apiFetchedThisHour = true;
+  }
 
-    timeClient.update();
-    int currentMinute = timeClient.getMinutes();
-
-    if (currentMinute == 5 && !apiFetchedThisHour && !nightMode) {
-      getElectricityPrices();
-      displayMDNS(getIP());
-      apiFetchedThisHour = true;
-    }
-
-    if (currentMinute != 5) {
-      apiFetchedThisHour = false;
-    }
+  if (currentMinute % 15 != 0) {
+  apiFetchedThisHour = false;
+  }
 
     if (nightMode) {
       int currentHour = timeClient.getHours();
@@ -66,7 +60,5 @@ void loop() {
         turnOnDisplay();
       }
     }
-    
-  }
   loopOTA();
 }

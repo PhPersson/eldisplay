@@ -9,10 +9,8 @@ const char* getCurrentDate(){
   static char dateStr[15];
   int dstOffset = ptm->tm_isdst > 0 ? 1 : 0; 
   ptm->tm_hour += dstOffset; 
-
   strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
   return dateStr;
-
 }
 
 void initTime(){

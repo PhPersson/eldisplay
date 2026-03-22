@@ -71,7 +71,6 @@ void saveConfig(AsyncWebServerRequest *request)
         String area = request->getParam(PARAM_AREA, true)->value();
         strncpy(priceArea, area.c_str(), sizeof(priceArea) - 1);
         priceArea[sizeof(priceArea) - 1] = '\0'; // Ensure null-termination
-
         saveChar("priceArea", priceArea);
     }
 
