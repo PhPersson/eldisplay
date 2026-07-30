@@ -115,12 +115,25 @@ void drawCenteredMessage(const String& text) {
   lcd.setCursor(x, y);
   lcd.print(text);
 }
+void drawConnectedMessage(const String& text) {
+  lcd.fillScreen(TFT_BLACK);
+
+  lcd.setFont(&fonts::Font4);
+  lcd.setTextColor(TFT_GREEN, TFT_BLACK);
+
+  int w = lcd.textWidth(text);
+  int x = (lcd.width() - w) / 2;
+  int y = 110;
+
+  lcd.setCursor(x, y);
+  lcd.print(text);
+}
 
 
 bool fetchCurrentPrice() {
   HTTPClient http;
   String url = String("https://se.elpris.eu") + todayPath();
-
+  Serial.println("Gjorde en förfrågan");
   client.stop();
   client.setInsecure();
 
@@ -174,11 +187,16 @@ bool fetchCurrentPrice() {
 
 
 void connectWifi() {
-    WiFi.mode(WIFI_STA); 
+    WiFi.mode(WIFI_STA);
+    delay(1000);
     WiFiManager wifiManager;
     wifiManager.setConnectTimeout(120);
+    WiFi.setTxPower(WIFI_POWER_8_5dBm);
+    drawCenteredMessage("Connecting to WiFi");
     wifiManager.autoConnect("Eldisplay");
+    drawCenteredMessage("Connect to Eldisplay");
     WiFi.setHostname("eldisplay");
+    drawConnectedMessage("Connected OK");
 }
 
 void setupTime() {
@@ -203,7 +221,8 @@ void setup() {
   lcd.init();
   lcd.setRotation(0);
   lcd.setBrightness(180);
-
+  drawCenteredMessage("Starting up");
+  delay(2500);
   connectWifi();
   setupTime();
 
