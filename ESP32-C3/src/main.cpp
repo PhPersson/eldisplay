@@ -5,10 +5,15 @@
 #include <ArduinoJson.h>
 #include <LovyanGFX.hpp>
 #include <WiFiManager.h> 
+#include <Preferences.h>
+#include <ESPAsyncWebServer.h>
+Preferences prefs;
+AsyncWebServer server(80);
+#include "webui.h"
 
-const char* PRICE_AREA = "SE4";
-const bool ADD_TAX = false;
-const float THRESHOLD = 1.0f;
+String priceArea = "SE4";
+bool addTax = false;
+float threshold = 1.0f;
 
 class LGFX : public lgfx::LGFX_Device {
   lgfx::Panel_GC9A01 _panel_instance;
@@ -66,14 +71,14 @@ WiFiClientSecure client;
 float currentPrice = 0.0f;
 
 float applyTax(float price) {
-  if (ADD_TAX) {
+  if (addTax) {
     price = price * 1.25f + 0.535f;
   }
   return roundf(price * 100.0f) / 100.0f;
 }
 
 uint16_t priceColor(float price) {
-  return price > THRESHOLD ? TFT_RED : TFT_GREEN;
+  return price > threshold ? TFT_RED : TFT_GREEN;
 }
 
 String todayPath() {
@@ -84,7 +89,7 @@ String todayPath() {
 
   char buf[64];
   strftime(buf, sizeof(buf), "/api/v1/prices/%Y/%m-%d_", &timeinfo);
-  return String(buf) + PRICE_AREA + ".json?unit=kr";
+  return String(buf) + priceArea + ".json?unit=kr";
 }
 
 void drawCenteredPrice(float price) {
@@ -133,7 +138,6 @@ void drawConnectedMessage(const String& text) {
 bool fetchCurrentPrice() {
   HTTPClient http;
   String url = String("https://se.elpris.eu") + todayPath();
-  Serial.println("Gjorde en förfrågan");
   client.stop();
   client.setInsecure();
 
@@ -197,6 +201,7 @@ void connectWifi() {
     drawCenteredMessage("Connect to Eldisplay");
     WiFi.setHostname("eldisplay");
     drawConnectedMessage("Connected OK");
+    
 }
 
 void setupTime() {
@@ -212,6 +217,55 @@ void setupTime() {
   }
 }
 
+void loadSettings() {
+  prefs.begin("elpris", true);
+  priceArea = prefs.getString("area", "SE4");
+  addTax = prefs.getBool("tax", false);
+  threshold = prefs.getFloat("thresh", 1.0f);
+  prefs.end();
+}
+
+void saveSettings(const String& area, bool tax, float thresh) {
+  prefs.begin("elpris", false);
+  prefs.putString("area", area);
+  prefs.putBool("tax", tax);
+  prefs.putFloat("thresh", thresh);
+  prefs.end();
+
+  priceArea = area;
+  addTax = tax;
+  threshold = thresh;
+}
+
+void setupWeb() {
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    String html = index_html;
+    html.replace("value=\"SE1\">SE1", priceArea == "SE1" ? "value=\"SE1\" selected>SE1" : "value=\"SE1\">SE1");
+    html.replace("value=\"SE2\">SE2", priceArea == "SE2" ? "value=\"SE2\" selected>SE2" : "value=\"SE2\">SE2");
+    html.replace("value=\"SE3\">SE3", priceArea == "SE3" ? "value=\"SE3\" selected>SE3" : "value=\"SE3\">SE3");
+    html.replace("value=\"SE4\">SE4", priceArea == "SE4" ? "value=\"SE4\" selected>SE4" : "value=\"SE4\">SE4");
+    html.replace("name=\"threshold\">", "name=\"threshold\" value=\"" + String(threshold, 2) + "\">");
+    if (addTax) {
+      html.replace("name=\"tax\" value=\"1\">", "name=\"tax\" value=\"1\" checked>");
+    }
+    request->send(200, "text/html", html);
+  });
+
+  server.on("/save", HTTP_GET, [](AsyncWebServerRequest *request) {
+    String area = request->hasParam("area") ? request->getParam("area")->value() : "SE4";
+    bool tax = request->hasParam("tax");
+    float thresh = request->hasParam("threshold") ? request->getParam("threshold")->value().toFloat() : 1.0f;
+
+    saveSettings(area, tax, thresh);
+
+    request->send(200, "text/html",
+      "<html><body><h3>Saved</h3><p>Restarting...</p></body></html>");
+  });
+
+  server.begin();
+}
+
+
 unsigned long lastFetch = 0;
 
 void setup() {
@@ -222,9 +276,11 @@ void setup() {
   lcd.setRotation(0);
   lcd.setBrightness(180);
   drawCenteredMessage("Starting up");
+  loadSettings();
   delay(2500);
   connectWifi();
   setupTime();
+  setupWeb();
 
   if (fetchCurrentPrice()) {
     drawCenteredPrice(currentPrice);
