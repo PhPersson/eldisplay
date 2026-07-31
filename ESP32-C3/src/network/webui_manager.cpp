@@ -1,7 +1,7 @@
 #include "webui.h"
 #include "app_state.h"
 #include "settings.h"
-
+#include "web_not_found.h"
 #include <ESPAsyncWebServer.h>
 AsyncWebServer server(80);
 
@@ -32,6 +32,13 @@ void setupWeb() {
       "<html><body><h3>Saved</h3><p>Restarting device...</p></body></html>");
 
     restartRequested = true;
+  });
+
+
+  server.onNotFound([](AsyncWebServerRequest *request) {
+    String html = not_found_html;
+    html.replace("%PATH%", request->url());
+    request->send(404, "text/html", html);
   });
 
   server.begin();

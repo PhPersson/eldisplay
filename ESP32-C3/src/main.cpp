@@ -42,8 +42,6 @@ void loop() {
       drawCenteredPrice(currentPrice);
     } else {
       drawCenteredMessage("Error");
-      delay(10000);
-      ESP.restart();
     }
     lastFetch = millis();
   }
