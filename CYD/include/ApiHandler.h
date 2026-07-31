@@ -8,5 +8,4 @@
 #include <HTTPClient.h>
 #include <certs.h>
 void getElectricityPrices();
-
 #endif

@@ -1,19 +1,20 @@
 #include "TimeHandler.h"
 
-WiFiUDP udp;
-NTPClient timeClient(udp, "pool.ntp.org", 3600); // UTC+1
 
-const char* getCurrentDate(){
-  time_t rawTime = timeClient.getEpochTime();
-  struct tm *ptm = gmtime(&rawTime);
-  static char dateStr[15];
-  int dstOffset = ptm->tm_isdst > 0 ? 1 : 0; 
-  ptm->tm_hour += dstOffset; 
-  strftime(dateStr, sizeof(dateStr), "%Y/%m-%d", ptm);
-  return dateStr;
-}
+const char* getCurrentDate() {
+    static char dateStr[11];
 
-void initTime(){
-  timeClient.begin();
-  timeClient.update(); 
+    time_t now;
+    time(&now);
+
+    struct tm timeinfo;
+    localtime_r(&now, &timeinfo);
+
+    snprintf(dateStr, sizeof(dateStr), "%04d/%02d-%02d",
+             timeinfo.tm_year + 1900,
+             timeinfo.tm_mon + 1,
+             timeinfo.tm_mday);
+
+    Serial.println(dateStr);
+    return dateStr;
 }

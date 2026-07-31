@@ -14,17 +14,22 @@ void getElectricityPrices() {
     snprintf(url, sizeof(url), "%s%s_%s.json", api_url, getCurrentDate(), priceArea);
     client.setCACert(root_ca);
     http.begin(client, String(url));
+    Serial.println(url);
     int httpCode = http.GET();
     if (httpCode > 0) {
         clearDisplay();
         String payload = http.getString();
         JsonDocument json;
+        Serial.println(payload);
         DeserializationError error = deserializeJson(json, payload);
         displayDeviceText();
-
+        struct tm timeinfo;
+        if (!getLocalTime(&timeinfo)) {
+            return;
+        }
         JsonArray data = json.as<JsonArray>();
-        int currentHour = timeClient.getHours();
-        int currentMinute = timeClient.getMinutes();
+        int currentHour = timeinfo.tm_hour;
+        int currentMinute = timeinfo.tm_min;
         int currentQuarter = (currentMinute / 15) * 15;
         int currentTotalMinutes = currentHour * 60 + currentQuarter;
         int timeDisplayed = 0;
@@ -45,7 +50,7 @@ void getElectricityPrices() {
                     totalSekPerKwh = sekPerKwh * 1.25 + 0.535;
                 }
                 totalSekPerKwh = round(totalSekPerKwh * 100.0) / 100.0;
-
+                
                 if (diff == 0) {
                     currentPrice = totalSekPerKwh;
                 }

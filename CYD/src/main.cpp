@@ -33,12 +33,22 @@ void setup() {
   }
   displayMDNS(getIP());
 }
+const char* ntpServer = "pool.ntp.org";
+const char* tzSweden  = "CET-1CEST,M3.5.0/02,M10.5.0/03";
+struct tm timeinfo;
+void initTime() {
+    configTzTime(tzSweden, ntpServer);
 
 
+    while (!getLocalTime(&timeinfo)) {
+        delay(500);
+    }
+
+}
 
 void loop() {
   unsigned long currentMillis = millis();
-  int currentMinute = timeClient.getMinutes();
+  int currentMinute = timeinfo.tm_min;
 
   if ((currentMinute % 15 == 0) && !apiFetchedThisHour) {
     getElectricityPrices();
@@ -51,7 +61,7 @@ void loop() {
   }
 
     if (nightMode) {
-      int currentHour = timeClient.getHours();
+      int currentHour = timeinfo.tm_hour;
       if (currentHour >= 23 || currentHour < 6) {
         turnOffDisplay();
       } else {
