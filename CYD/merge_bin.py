@@ -2,7 +2,6 @@ Import("env", "projenv")
 import subprocess, os
 
 def merge_bin(source, target, env):
-    # Använd PlatformIO:s inbyggda esptool istället
     esptool = os.path.join(
         env.subst("$PROJECT_PACKAGES_DIR"),
         "tool-esptoolpy", "esptool.py"
@@ -24,10 +23,5 @@ def merge_bin(source, target, env):
         "0x10000", env.subst("$BUILD_DIR/${PROGNAME}.bin"),
     ]
     result = subprocess.run(flash_args, capture_output=True, text=True)
-    print(result.stdout)
-    if result.returncode == 0:
-        print(">>> merged.bin skapad!")
-    else:
-        print("FEL:", result.stderr)
 
 env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", merge_bin)

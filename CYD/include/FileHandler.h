@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 
-// Function declarations for saving variables
 void saveChar(const char* filename, const char* value);
 void saveFloat(const char* filename, float value);
 void saveBool(const char* filename, bool value);
