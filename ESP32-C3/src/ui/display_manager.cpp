@@ -54,6 +54,16 @@ void setupDisplay() {
   lcd.init();
   lcd.setRotation(0);
   lcd.setBrightness(180);
+
+}
+void drawHeader(const String &text, uint16_t color = TFT_WHITE) {
+    lcd.setTextSize(1);
+    lcd.setTextColor(color, TFT_BLACK);
+    lcd.setTextDatum(TC_DATUM);
+    int headerY = 22;
+    lcd.drawString(text, lcd.width() / 2, headerY);
+
+    lcd.setTextDatum(TL_DATUM);
 }
 
 uint16_t priceColor(float price) {
@@ -61,7 +71,9 @@ uint16_t priceColor(float price) {
 }
 
 void drawCenteredPrice(float price) {
+  
   lcd.fillScreen(TFT_BLACK);
+  drawHeader("Elpriset",TFT_WHITE);
   lcd.setFont(&fonts::Font8);
   lcd.setTextColor(priceColor(price), TFT_BLACK);
 

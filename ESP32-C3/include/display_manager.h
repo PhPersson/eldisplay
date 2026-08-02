@@ -7,3 +7,4 @@ void drawCenteredPrice(float price);
 void drawCenteredMessage(const String& text);
 void drawConnectedMessage(const String& text);
 uint16_t priceColor(float price);
+void drawHeader(const String &text, uint16_t color);
