@@ -9,7 +9,9 @@ void connectWifi() {
     delay(1000);
     WiFiManager wifiManager;
     wifiManager.setConnectTimeout(120);
-    WiFi.setTxPower(WIFI_POWER_8_5dBm);
+    #if defined(BOARD_GC9A01_ROUND)
+        WiFi.setTxPower(WIFI_POWER_8_5dBm);
+    #endif
     drawCenteredMessage("Connecting to WiFi");
     wifiManager.autoConnect("Eldisplay");
     drawCenteredMessage("Connect to Eldisplay");
