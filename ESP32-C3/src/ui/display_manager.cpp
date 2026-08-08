@@ -128,7 +128,11 @@ static DisplayLCD2 lcd;
 
 void setupDisplay() {
   lcd.init();
+  #if defined(BOARD_GC9A01_ROUND)
   lcd.setRotation(0);
+  #elif defined(BOARD_LCD2_ST7789)
+  lcd.setRotation(1);
+  #endif
   lcd.setBrightness(180);
 
 }
