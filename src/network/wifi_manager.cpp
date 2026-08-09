@@ -27,7 +27,7 @@ void connectWifi() {
 
     String message = "Connected to WiFi:" + WiFi.SSID();
     drawConnectedMessage(message.c_str());
-
+    MDNS.begin("eldisplay");
     delay(2000);
 }
 void handleWifiStatusMessage(WiFiManager *myWiFiManager) {
