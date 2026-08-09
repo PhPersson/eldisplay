@@ -93,7 +93,6 @@ const char not_found_html[] PROGMEM = R"rawliteral(
     .primary {
       background: var(--accent);
       color: white;
-      box-shadow: 0 10px 24px rgba(0,113,227,0.22);
     }
     .secondary {
       background: rgba(255,255,255,0.7);
@@ -109,8 +108,7 @@ const char not_found_html[] PROGMEM = R"rawliteral(
 </head>
 <body>
   <main class="card">
-    <div class="code">Error 404</div>
-    <p>The spot price was high, so this page could not be find,</p>
+    <p>The spot price was too high, so this page could not be viewed due to the high price.</p>
     <div class="actions">
       <a class="primary" href="/">Go home</a>
     </div>
