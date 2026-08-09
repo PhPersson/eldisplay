@@ -124,7 +124,7 @@ void drawUpcomingPrices(
         TFT_BLACK
     );
 
-    lcd.drawString(priceText, centerX, 65);
+    lcd.drawString(priceText, centerX, 75);
 
     snprintf(
         priceText,
