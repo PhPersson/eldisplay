@@ -20,16 +20,23 @@ void setup() {
   connectWifi();
   setupTime();
   setupWeb();
-
-  if (fetchCurrentPrice()) {
-    drawCenteredPrice(currentPrice);
-  } else {
-    drawCenteredMessage("Error");
-    delay(10000);
-    ESP.restart();
-  }
-
-  lastFetch = millis();
+#if defined(BOARD_ESP32_CYD)
+    if (fetchUpcomingCurrentPrices()) {
+      drawUpcomingPrices(currentPrice, upcomingPrice1, upcomingPrice2, threshold);
+    } else {
+      drawCenteredMessage("Error");
+      delay(10000);
+      ESP.restart();
+    }
+  #else
+    if (fetchCurrentPrice()) {
+      drawCenteredPrice(currentPrice);
+    } else {
+      drawCenteredMessage("Error");
+      delay(10000);
+      ESP.restart();
+    }
+  #endif
 }
 
 void loop() {
@@ -38,11 +45,23 @@ void loop() {
     ESP.restart();
   }
   if (millis() - lastFetch > 5UL * 60UL * 1000UL) {
+  #if defined(BOARD_ESP32_CYD)
+    if (fetchUpcomingCurrentPrices()) {
+      drawUpcomingPrices(currentPrice, upcomingPrice1, upcomingPrice2, threshold);
+    } else {
+      drawCenteredMessage("Error");
+      delay(10000);
+      ESP.restart();
+    }
+  #else
     if (fetchCurrentPrice()) {
       drawCenteredPrice(currentPrice);
     } else {
       drawCenteredMessage("Error");
+      delay(10000);
+      ESP.restart();
     }
+  #endif
     lastFetch = millis();
   }
 
