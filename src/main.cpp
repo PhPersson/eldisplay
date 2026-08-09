@@ -1,5 +1,4 @@
 #include <Arduino.h>
-
 #include "webui.h"
 #include "display_manager.h"
 #include "time_manager.h"
@@ -20,7 +19,7 @@ void setup() {
   connectWifi();
   setupTime();
   setupWeb();
-#if defined(BOARD_ESP32_CYD)
+  #if defined(BOARD_ESP32_CYD)
     if (fetchUpcomingCurrentPrices()) {
       drawUpcomingPrices(currentPrice, upcomingPrice1, upcomingPrice2, threshold);
     } else {
@@ -30,7 +29,7 @@ void setup() {
     }
   #else
     if (fetchCurrentPrice()) {
-      drawCenteredPrice(currentPrice);
+      drawCenteredPrice(currentPrice, threshold);
     } else {
       drawCenteredMessage("Error");
       delay(10000);
@@ -55,7 +54,7 @@ void loop() {
     }
   #else
     if (fetchCurrentPrice()) {
-      drawCenteredPrice(currentPrice);
+      drawCenteredPrice(currentPrice, threshold);
     } else {
       drawCenteredMessage("Error");
       delay(10000);

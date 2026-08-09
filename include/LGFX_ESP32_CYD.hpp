@@ -1,4 +1,5 @@
 #pragma once
+#include <driver/spi_master.h>
 #include <LovyanGFX.hpp>
 
 class LGFX_ESP32_CYD : public lgfx::LGFX_Device {
@@ -13,7 +14,7 @@ public:
         {
             auto cfg = _bus_instance.config();
 
-            cfg.spi_host   = VSPI_HOST;
+            cfg.spi_host = SPI3_HOST;
             cfg.spi_mode   = 0;
 
             cfg.freq_write = 40000000;
