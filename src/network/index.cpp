@@ -201,6 +201,13 @@ const char index_html[] PROGMEM = R"rawliteral(
           </div>
           <input type="checkbox" name="tax" value="1">
         </div>
+        <div class="toggle">
+          <div class="toggle-text">
+            <strong>Show only current price</strong>
+            <span>Show only the current price instead of the upcoming prices.</span>
+          </div>
+          <input type="checkbox" name="showOnlyCurrentPrice" value="1">
+        </div>
 
         <div class="field">
           <label for="threshold">Threshold</label>

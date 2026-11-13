@@ -2,6 +2,7 @@
 
 String priceArea = "SE4";
 bool addTax = false;
+bool showOnlyCurrentPrice = false;
 float threshold = 1.0f;
 float currentPrice = 0.0f;
 float upcomingPrice1 = 0.0f;

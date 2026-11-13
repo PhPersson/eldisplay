@@ -16,6 +16,9 @@ void setupWeb() {
     if (addTax) {
       html.replace("name=\"tax\" value=\"1\">", "name=\"tax\" value=\"1\" checked>");
     }
+    if (showOnlyCurrentPrice) {
+      html.replace("name=\"showOnlyCurrentPrice\" value=\"1\">", "name=\"showOnlyCurrentPrice\" value=\"1\" checked>");
+    }
     request->send(200, "text/html", html);
   });
 
@@ -25,13 +28,14 @@ void setupWeb() {
     String area = request->hasParam("area") ? request->getParam("area")->value() : "SE4";
     bool tax = request->hasParam("tax");
     float thresh = request->hasParam("threshold") ? request->getParam("threshold")->value().toFloat() : 1.0f;
+    bool onlyCurrentPrice = request->hasParam("showOnlyCurrentPrice");
 
-    saveSettings(area, tax, thresh);
+    saveSettings(area, tax, thresh, onlyCurrentPrice);
 
     request->send(200, "text/html",
       "<html><body><h3>Saved</h3><p>Restarting device...</p></body></html>");
-
-    restartRequested = true;
+    delay(5000);
+    ESP.restart();
   });
 
 

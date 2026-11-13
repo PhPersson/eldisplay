@@ -23,8 +23,8 @@ void setupDisplay() {
   lcd.invertDisplay(true);
   #endif
   lcd.setBrightness(180);
-
 }
+
 void drawHeader(const String &text, uint16_t color = TFT_WHITE) {
     lcd.setTextSize(1);
     lcd.setTextColor(color, TFT_BLACK);

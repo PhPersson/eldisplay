@@ -15,17 +15,28 @@ void setup() {
   setupDisplay();
   drawCenteredMessage("Starting up");
   loadSettings();
+  Serial.println(showOnlyCurrentPrice ? "showOnlyCurrentPrice is true" : "showOnlyCurrentPrice is false");
   delay(2500);
   connectWifi();
   setupTime();
   setupWeb();
   #if defined(BOARD_ESP32_CYD)
-    if (fetchUpcomingCurrentPrices()) {
-      drawUpcomingPrices(currentPrice, upcomingPrice1, upcomingPrice2, threshold);
+    if (showOnlyCurrentPrice) {
+      if (fetchCurrentPrice()) {
+        drawCenteredPrice(currentPrice, threshold);
+      } else {
+        drawCenteredMessage("Error");
+        delay(10000);
+        ESP.restart();
+      }
     } else {
-      drawCenteredMessage("Error");
-      delay(10000);
-      ESP.restart();
+        if (fetchUpcomingCurrentPrices()) {
+          drawUpcomingPrices(currentPrice, upcomingPrice1, upcomingPrice2, threshold);
+        } else {
+          drawCenteredMessage("Error");
+          delay(10000);
+          ESP.restart();
+        }
     }
   #else
     if (fetchCurrentPrice()) {
@@ -67,16 +78,23 @@ void handleFetchError()
 void fetchAndDrawPrices()
 {
 #if defined(BOARD_ESP32_CYD)
-  if (fetchUpcomingCurrentPrices()) {
-    drawUpcomingPrices(
-      currentPrice,
-      upcomingPrice1,
-      upcomingPrice2,
-      threshold
-    );
-  } else {
-    handleFetchError();
-  }
+    if (showOnlyCurrentPrice) {
+        if (fetchCurrentPrice()) {
+            drawCenteredPrice(currentPrice, threshold);
+        } else {
+            drawCenteredMessage("Error");
+            delay(10000);
+            ESP.restart();
+        }
+    } else {
+        if (fetchUpcomingCurrentPrices()) {
+            drawUpcomingPrices(currentPrice, upcomingPrice1, upcomingPrice2, threshold);
+        } else {
+            drawCenteredMessage("Error");
+            delay(10000);
+            ESP.restart();
+        }
+    }
 #else
   if (fetchCurrentPrice()) {
     drawCenteredPrice(currentPrice, threshold);
@@ -89,6 +107,7 @@ void fetchAndDrawPrices()
 void loop()
 {
   if (restartRequested) {
+    Serial.println("Restart requested, restarting...");
     requestRestart(500);
   }
 
